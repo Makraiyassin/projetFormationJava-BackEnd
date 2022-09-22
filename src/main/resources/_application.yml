@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url:
+    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
@@ -12,10 +12,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
-application:
-  jwt:
-    secret:
-    expiresAt:
-    headerPrefix: "Bearer "
-    headerKey: "Authorization"
