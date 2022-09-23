@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OmnithequeMapper {
-    private final AdressMapper adressMapper;
+    private final AddressMapper adressMapper;
     private final ProductMapper productMapper;
 
-    public OmnithequeMapper(AdressMapper adressMapper, ProductMapper productMapper) {
+    public OmnithequeMapper(AddressMapper adressMapper, ProductMapper productMapper) {
         this.adressMapper = adressMapper;
         this.productMapper = productMapper;
     }

@@ -14,10 +14,10 @@ public class UsersForm {
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
-    private AddressForm addressForm;
+    private AddressForm address;
     private String phone;
     private String email;
     private String password;
-    private OmnithequeForm omnithequeForm;
-    private List<BorrowForm> borrowFormList;
+    private OmnithequeForm omnitheque;
+    private List<BorrowForm> borrowList;
 }
