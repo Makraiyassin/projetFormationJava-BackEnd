@@ -17,8 +17,8 @@ public class OmnithequeController {
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public List<OmnithequeDto> getOne(@PathVariable long id){
-        return new ArrayList<>();
+    public OmnithequeDto getOne(@PathVariable long id){
+        return service.getOne(id);
     }
 
     @GetMapping()
