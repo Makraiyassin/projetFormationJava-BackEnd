@@ -26,7 +26,6 @@ public class Users {
     @OneToOne
     @JoinColumn(name = "omnitheque_id")
     private Omnitheque omnitheque;
-
     @OneToMany(mappedBy = "user")
     private List<Borrow> borrowList;
 }

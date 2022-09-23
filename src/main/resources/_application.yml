@@ -3,8 +3,8 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
-    username: postgres
+    url: jdbc:postgresql://localhost:5432/<DB_NAME>
+    username:
     password:
     driver-class-name: org.postgresql.Driver
 

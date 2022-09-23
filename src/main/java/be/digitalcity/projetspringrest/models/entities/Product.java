@@ -16,6 +16,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -24,5 +25,4 @@ public class Product {
 
     @ManyToMany(mappedBy = "productList")
     private List<Omnitheque> omnithequeList;
-
 }
