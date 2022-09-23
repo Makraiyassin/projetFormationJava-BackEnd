@@ -2,6 +2,7 @@ package be.digitalcity.projetspringrest.services;
 
 import be.digitalcity.projetspringrest.mappers.OmnithequeMapper;
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
+import be.digitalcity.projetspringrest.models.dtos.ProductDto;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class OmnithequeService {
     }
 
     public OmnithequeDto getOne(Long id){
-        Omnitheque omnitheque = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune omnitheque trouver avec l'id {"+id+"}"));
+        Omnitheque omnitheque = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune omnitheque trouvé avec l'id {"+id+"}"));
         return mapper.entityToDto(omnitheque);
     }
     public List<OmnithequeDto> getAll(){
