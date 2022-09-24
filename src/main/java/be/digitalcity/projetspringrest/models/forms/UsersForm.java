@@ -10,7 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class UsersForm {
-    private Long id;
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
@@ -18,6 +17,4 @@ public class UsersForm {
     private String phone;
     private String email;
     private String password;
-    private OmnithequeForm omnitheque;
-    private List<BorrowForm> borrowList;
 }

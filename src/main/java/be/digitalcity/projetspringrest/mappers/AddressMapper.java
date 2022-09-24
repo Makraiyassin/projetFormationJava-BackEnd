@@ -20,7 +20,6 @@ public class AddressMapper {
 
     public Address formToEntity(AddressForm form){
         Address entity = new Address();
-        entity.setId(form.getId());
         entity.setStreet(form.getStreet());
         entity.setNumber(form.getNumber());
         entity.setCp(form.getCp());

@@ -22,17 +22,23 @@ public class Users implements UserDetails {
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
+
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
     private String phone;
     private String email;
     private String password;
+    private boolean enabled = true;
+
     @OneToOne
     @JoinColumn(name = "omnitheque_id")
     private Omnitheque omnitheque;
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany
+    @JoinTable(name = "users_borrow")
     private List<Borrow> borrowList;
+
     @ElementCollection  //(fetch = FetchType.EAGER)
     private List<String> roles;
 
@@ -59,11 +65,6 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
         return true;
     }
 }

@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter authFilter) throws Exception {
-//        http.csrf().disable(); //????????????
+        http.csrf().disable(); //????????????
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); //????????????
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //????????????
         http.authorizeRequests().anyRequest().permitAll();

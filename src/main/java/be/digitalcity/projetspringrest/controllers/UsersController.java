@@ -1,5 +1,6 @@
 package be.digitalcity.projetspringrest.controllers;
 
+import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.services.UsersDetailsServiceImpl;
 import be.digitalcity.projetspringrest.utils.JwtProvider;
@@ -24,7 +25,7 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public void createUser(@RequestBody UsersForm form){
-        service.create(form);
+    public UsersDto createUser(@RequestBody UsersForm form){
+        return service.create(form);
     }
 }

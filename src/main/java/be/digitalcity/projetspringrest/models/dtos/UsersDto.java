@@ -15,10 +15,10 @@ public class UsersDto {
     private String firstName;
     private String lastName;
     private LocalDate birthdate;
-    private AddressDto addressDto;
+    private AddressDto address;
     private String phone;
     private String email;
     private String password;
-    private OmnithequeDto omnithequeDto;
+    private OmnithequeDto omnitheque;
     private List<BorrowDto> borrowDtoList;
 }
