@@ -14,7 +14,6 @@ public class OmnithequeDto {
     private String phone;
     private String email;
     private AddressDto address;
-    private Long ownerId;
-    private List<Long> borrowIdList;
+    private List<BorrowDto> borrowList;
     private List<ProductDto> productList;
 }

@@ -22,12 +22,10 @@ public class Omnitheque {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "omnitheque")
+    @OneToMany
+    @JoinTable(name = "users_borrow")
     private List<Borrow> borrowList;
 
-    @OneToOne
-    @JoinColumn(name = "owner_id")
-    private Users owner;
 
     @ManyToMany
     @JoinTable(

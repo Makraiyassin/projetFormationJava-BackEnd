@@ -12,7 +12,4 @@ public class ProductDto {
     private Long id;
     private String name;
     private Category category;
-//    private List<BorrowDto> borrowDtoList;
-//    private List<OmnithequeDto> omnithequeDtoList;
-
 }

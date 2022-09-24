@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OmnithequeMapper {
-    private final AdressMapper adressMapper;
+    private final AddressMapper adressMapper;
     private final ProductMapper productMapper;
+    private final BorrowMapper borrowMapper;
 
-    public OmnithequeMapper(AdressMapper adressMapper, ProductMapper productMapper) {
+    public OmnithequeMapper(AddressMapper adressMapper, ProductMapper productMapper, BorrowMapper borrowMapper) {
         this.adressMapper = adressMapper;
         this.productMapper = productMapper;
+        this.borrowMapper = borrowMapper;
     }
 
     public OmnithequeDto entityToDto(Omnitheque entity){
@@ -24,8 +26,7 @@ public class OmnithequeMapper {
         dto.setPhone(entity.getPhone());
         dto.setEmail(entity.getEmail());
         dto.setAddress(adressMapper.entityToDto(entity.getAddress()));
-        dto.setOwnerId(entity.getOwner().getId());
-        dto.setBorrowIdList(entity.getBorrowList().stream().map(Borrow::getId).toList());
+        dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
         dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).toList());
         return dto;
     }
