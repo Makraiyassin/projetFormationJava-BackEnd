@@ -2,8 +2,11 @@ package be.digitalcity.projetspringrest.mappers;
 
 
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
+import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Borrow;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
+import be.digitalcity.projetspringrest.models.forms.AddressForm;
+import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +29,18 @@ public class OmnithequeMapper {
         dto.setPhone(entity.getPhone());
         dto.setEmail(entity.getEmail());
         dto.setAddress(adressMapper.entityToDto(entity.getAddress()));
-        dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
-        dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).toList());
+        if(entity.getBorrowList() != null)
+            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
+        if(entity.getProductList() != null)
+            dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).toList());
         return dto;
+    }
+
+    public Omnitheque formToEntity(OmnithequeForm form){
+        Omnitheque entity = new Omnitheque();
+        entity.setName(form.getName());
+        entity.setEmail(form.getEmail());
+        entity.setPhone(form.getPhone());
+        return entity;
     }
 }
