@@ -26,7 +26,7 @@ public class UsersMapper {
         user.setEmail(form.getEmail());
         return user;
     }
-    public UsersDto EntityToDto(Users entity){
+    public UsersDto entityToDto(Users entity){
         UsersDto dto = new UsersDto();
         dto.setId(entity.getId());
         dto.setFirstName(entity.getFirstName());

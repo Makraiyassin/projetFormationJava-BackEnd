@@ -6,8 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 public class AddressForm {
     private String street;
-    private int number;
-    private int cp;
+    private Integer number;
+    private Integer cp;
     private String city;
     private String country;
 

@@ -12,5 +12,5 @@ public class OmnithequeForm {
     private String name;
     private String phone;
     private String email;
-    private AddressForm addressForm;
+    private AddressForm address;
 }
