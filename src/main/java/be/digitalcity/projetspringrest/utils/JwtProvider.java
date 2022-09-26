@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 @Slf4j
 @Component
@@ -32,7 +34,7 @@ public class JwtProvider {
     public TokenDto createToken(Authentication auth){
         return new TokenDto(JWT.create()
                 // Declarer les claims du payload
-                .withExpiresAt( Instant.now().plusSeconds(properties.getExpiresAt()) )
+                .withExpiresAt( Instant.now().plus(properties.getExpiresAt(), ChronoUnit.DAYS) )
                 .withSubject(auth.getName())
                 .withClaim(
                         "roles",

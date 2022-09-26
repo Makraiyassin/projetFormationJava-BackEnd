@@ -22,4 +22,9 @@ public class Address {
     private String city;
     private String country;
 
+    @Override
+    public String toString() {
+        return String.format("%s n°%s, %s %s", street,number,cp,city);
+    }
+
 }

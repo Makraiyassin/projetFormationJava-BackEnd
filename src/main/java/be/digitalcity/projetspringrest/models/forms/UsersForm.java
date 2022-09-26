@@ -5,10 +5,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Data
 public class UsersForm {
     private String firstName;
     private String lastName;
