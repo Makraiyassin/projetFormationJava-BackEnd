@@ -1,16 +1,18 @@
 package be.digitalcity.projetspringrest.controllers;
 
+import be.digitalcity.projetspringrest.models.dtos.TokenDto;
 import be.digitalcity.projetspringrest.models.dtos.UsersDto;
+import be.digitalcity.projetspringrest.models.forms.LoginForm;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.services.UsersDetailsServiceImpl;
 import be.digitalcity.projetspringrest.utils.JwtProvider;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200/"})
 @RequestMapping("/api/user")
 public class UsersController {
 
@@ -27,5 +29,10 @@ public class UsersController {
     @PostMapping("/register")
     public UsersDto createUser(@RequestBody UsersForm form){
         return service.create(form);
+    }
+    @PostMapping("/login")
+    public TokenDto login(@RequestBody LoginForm form){
+        Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(form.getEmail(), form.getPassword()));
+        return jwtProvider.createToken(auth);
     }
 }
