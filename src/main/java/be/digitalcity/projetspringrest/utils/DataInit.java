@@ -40,13 +40,6 @@ public class DataInit implements InitializingBean {
             new AddressForm("rue haute", 1, 1060, "Bruxelles", "Belgique"),
             new AddressForm("boulevard leopold", 1, 1210, "Bruxelles", "Belgique")
         );
-        List<UsersForm> usersList = Arrays.asList(
-            new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(1),"900-633-9958","string@string.com", "hello"),
-            new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(2),"900-633-9958","string2@string.com", "hello"),
-            new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(3),"900-633-9958","string3@string.com", "hello"),
-            new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(2),"900-633-9958","string4@string.com", "hello"),
-            new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(1),"900-633-9958","string5@string.com", "hello")
-        );
         List<ProductForm> productList = Arrays.asList(
             new ProductForm("One piece Red", Category.MOVIE),
             new ProductForm("Harry Potter", Category.BOOK),
@@ -59,12 +52,18 @@ public class DataInit implements InitializingBean {
             new OmnithequeForm("mediacity", "022175698", "hello@hola.com", addressList.get(3)),
             new OmnithequeForm("le libraire", "022175698", "hello@hola.com", addressList.get(1))
         );
-
+        List<UsersForm> usersList = Arrays.asList(
+                new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(1),"900-633-9958","string@string.com", "hello"),
+                new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(2),"900-633-9958","string2@string.com", "hello"),
+                new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(3),"900-633-9958","string3@string.com", "hello"),
+                new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(2),"900-633-9958","string4@string.com", "hello"),
+                new UsersForm ("Hello", "Hola", LocalDate.of(1992,1,1),addressList.get(0),"900-633-9958","string5@string.com", "hello")
+        );
 
         addressList.forEach(addressService::create);
         productList.forEach(productService::create);
-        usersList.forEach(usersService::create);
         omnithequeList.forEach(omnithequeService::create);
+        usersList.forEach(usersService::create);
 
     }
 

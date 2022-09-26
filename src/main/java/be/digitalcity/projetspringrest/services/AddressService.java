@@ -5,12 +5,14 @@ import be.digitalcity.projetspringrest.models.dtos.AddressDto;
 import be.digitalcity.projetspringrest.models.dtos.ProductDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
+import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.AddressForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -35,6 +37,8 @@ public class AddressService {
     public AddressDto create(AddressForm form){
         if( form == null) throw new IllegalArgumentException("le formulaire ne peut pas être null");
 
+        Address addressChecked = search(form) ;
+        if(addressChecked != null) return mapper.entityToDto(addressChecked);
         return mapper.entityToDto(repository.save(mapper.formToEntity(form) ));
     }
 
@@ -51,8 +55,18 @@ public class AddressService {
 
         return mapper.entityToDto(repository.save(toUpdate));    }
 
-    public AddressDto delete(long id){
-        return new AddressDto();
+    public AddressDto delete(Long id){
+        if(id == null)
+            throw new IllegalArgumentException("l'id ne peut pas être null");
+
+        Address address = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune addresse trouvé avec l'id {"+id+"}"));
+        repository.delete(address);
+        return mapper.entityToDto(address);
+    }
+
+    protected Address search(AddressForm form){
+        Optional<Address> addressChecked = repository.findDistinctByStreetAndNumberAndCp(form.getStreet(), form.getNumber(), form.getCp());
+        return addressChecked.orElse(null);
     }
 
 }
