@@ -7,6 +7,11 @@ spring:
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
+#    datasource:
+#      url: jdbc:mysql://localhost:3306/db_projet_spring_rest
+#      username: root
+#      password:
+#      driver-class-name: com.mysql.jdbc.Driver
 
   jpa:
     show-sql: true
