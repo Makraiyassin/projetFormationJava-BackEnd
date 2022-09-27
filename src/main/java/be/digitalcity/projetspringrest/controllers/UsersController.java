@@ -44,8 +44,15 @@ public class UsersController {
 //        return service.getUserWithToken(token);
 //    }
 
-    @GetMapping("/profil")
-    public UsersDto getUser(HttpServletRequest request){
-        return service.getUserWithToken(request);
-    }
+//    @GetMapping("/profil")
+//    public UsersDto getUser(HttpServletRequest request){
+//        return service.getUserWithToken(request);
+//    }
+
+//    @GetMapping("/profil")
+//    public UsersDto getUser(Authentication authentication){
+//        System.out.println("*********************\n"+authentication.getName());
+////        return service.getUser(authentication.getName());
+//        return new UsersDto();
+//    }
 }

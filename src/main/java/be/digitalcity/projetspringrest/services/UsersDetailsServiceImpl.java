@@ -71,4 +71,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         if(user.isPresent()) return mapper.entityToDto( user.get() );
         return null;
     }
+    public UsersDto getUser(String email) {
+        return mapper.entityToDto(repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Une erreur est survenue")));
+    }
 }
