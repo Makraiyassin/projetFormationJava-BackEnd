@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200/"})
 @RequestMapping("/api/user")
@@ -34,5 +36,16 @@ public class UsersController {
     public TokenDto login(@RequestBody LoginForm form){
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(form.getEmail(), form.getPassword()));
         return jwtProvider.createToken(auth);
+    }
+
+//    @GetMapping("/profil")
+//    public UsersDto getUser(@RequestHeader("Authorization") String token){
+//        System.out.println("*******************************\n" + token);
+//        return service.getUserWithToken(token);
+//    }
+
+    @GetMapping("/profil")
+    public UsersDto getUser(HttpServletRequest request){
+        return service.getUserWithToken(request);
     }
 }

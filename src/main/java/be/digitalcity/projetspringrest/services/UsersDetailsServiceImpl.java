@@ -5,10 +5,12 @@ import be.digitalcity.projetspringrest.mappers.UsersMapper;
 import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Users;
-import be.digitalcity.projetspringrest.models.forms.AddressForm;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
+import be.digitalcity.projetspringrest.utils.JwtProperties;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 @Service
 public class UsersDetailsServiceImpl implements UserDetailsService {
@@ -26,14 +30,16 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
+    private final JwtProperties jwtProperties;
 
-    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, PasswordEncoder encoder, AddressService addressService) {
+    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, PasswordEncoder encoder, AddressService addressService, JwtProperties jwtProperties) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.encoder = encoder;
         this.addressService = addressService;
+        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -58,4 +64,11 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         return mapper.entityToDto(repository.save( user ));
     }
 
+    public UsersDto getUserWithToken(HttpServletRequest request) {
+        String token = request.getHeader(jwtProperties.getHeaderKey()).replace(jwtProperties.getHeaderPrefix(),"");
+        DecodedJWT decodedJWT = JWT.decode(token);
+        Optional<Users> user = repository.findByEmail(decodedJWT.getSubject() );
+        if(user.isPresent()) return mapper.entityToDto( user.get() );
+        return null;
+    }
 }
