@@ -41,30 +41,9 @@ public class UsersController {
         return jwtProvider.createToken(auth);
     }
 
-//    @GetMapping("/profil")
-//    public UsersDto getUser(@RequestHeader("Authorization") String token){
-//        System.out.println("*******************************\n" + token);
-//        return service.getUserWithToken(token);
-//    }
-
-//    @GetMapping("/profil")
-//    public UsersDto getUser(HttpServletRequest request){
-//        return service.getUserWithToken(request);
-//    }
-
-//    @GetMapping("/profil")
-//    @Secured("ROLE_USER")
-//    public UsersDto getUser(Authentication authentication){
-//        return service.getUser(authentication.getName());
-//    }
-
     @GetMapping("/profil")
     @Secured("ROLE_USER")
-    public void getUser(){
-        System.out.println("*********************\n");
-        System.out.println("hello");
-        System.out.println("*********************\n");
+    public UsersDto getUser(Authentication authentication){
+        return service.getUser(authentication.getName());
     }
 }
-
-//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdHJpbmdAc3RyaW5nLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJleHAiOjE2NjY4OTI3OTV9.g0CNJs6SfrqU5wTynZXqLFEdBwMtNrjY2d8fMB-EzKBG-RADj2nzrBNCfjEK_yb4czzTjeOHP5MTtPapq2Fllw

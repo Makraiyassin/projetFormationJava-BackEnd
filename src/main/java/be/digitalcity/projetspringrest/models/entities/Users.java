@@ -14,7 +14,6 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +38,7 @@ public class Users implements UserDetails {
     @JoinTable(name = "users_borrow")
     private List<Borrow> borrowList;
 
-    @ElementCollection  //(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
 
     @Override
