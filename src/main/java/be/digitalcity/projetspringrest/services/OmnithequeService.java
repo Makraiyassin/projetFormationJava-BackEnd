@@ -2,12 +2,16 @@ package be.digitalcity.projetspringrest.services;
 
 import be.digitalcity.projetspringrest.mappers.AddressMapper;
 import be.digitalcity.projetspringrest.mappers.OmnithequeMapper;
+import be.digitalcity.projetspringrest.mappers.UsersMapper;
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
+import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
+import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,13 +24,15 @@ public class OmnithequeService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final AddressService addressService;
+    private final UsersDetailsServiceImpl usersService;
 
-    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService) {
+    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService) {
         this.mapper = mapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
         this.addressService = addressService;
+        this.usersService = usersService;
     }
 
     public OmnithequeDto getOne(Long id){
@@ -37,20 +43,17 @@ public class OmnithequeService {
         return repository.findAll().stream().map(mapper::entityToDto).toList();
     }
 
-    public OmnithequeDto create(OmnithequeForm form){
+    public OmnithequeDto create(OmnithequeForm form, Authentication auth){
         if( form == null) throw new IllegalArgumentException("le formulaire ne peut pas être null");
-
         Omnitheque omnitheque = mapper.formToEntity( form );
-
         Address addressChecked = addressService.search(form.getAddress());
-
         if(addressChecked != null ) {
             omnitheque.setAddress(addressChecked);
         }else {
             omnitheque.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
         }
 
-        return mapper.entityToDto(repository.save( omnitheque ));
+        return mapper.entityToDto(usersService.addOmnitheque(auth,omnitheque));
 
     }
 
@@ -76,5 +79,6 @@ public class OmnithequeService {
         repository.delete(omnitheque);
         return mapper.entityToDto(omnitheque);
     }
+
 
 }

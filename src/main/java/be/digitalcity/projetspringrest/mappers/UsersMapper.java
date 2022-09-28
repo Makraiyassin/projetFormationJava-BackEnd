@@ -15,8 +15,6 @@ public class UsersMapper {
         this.addressMapper = addressMapper;
         this.omnithequeMapper = omnithequeMapper;
     }
-
-
     public Users formToEntity(UsersForm form){
         Users user = new Users();
         user.setFirstName(form.getFirstName());
@@ -38,8 +36,16 @@ public class UsersMapper {
         if(entity.getOmnitheque() != null)
             dto.setOmnitheque(omnithequeMapper.entityToDto(entity.getOmnitheque()));
 
-        //TODO borrow mapper (regler import recursive !!! )
-
         return dto;
     }
+    public UsersForm dtoToForm(UsersDto dto){
+        UsersForm form = new UsersForm();
+        form.setFirstName(dto.getFirstName());
+        form.setLastName(dto.getLastName());
+        form.setBirthdate(dto.getBirthdate());
+        form.setPhone(dto.getPhone());
+        form.setEmail(dto.getEmail());
+        return form;
+    }
+
 }
