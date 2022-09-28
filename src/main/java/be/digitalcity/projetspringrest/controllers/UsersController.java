@@ -6,12 +6,14 @@ import be.digitalcity.projetspringrest.models.forms.LoginForm;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.services.UsersDetailsServiceImpl;
 import be.digitalcity.projetspringrest.utils.JwtProvider;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200/"})
@@ -29,23 +31,19 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public UsersDto createUser(@RequestBody UsersForm form){
+    public UsersDto createUser(@Valid @RequestBody UsersForm form){
         return service.create(form);
     }
+
     @PostMapping("/login")
-    public TokenDto login(@RequestBody LoginForm form){
+    public TokenDto login(@Valid @RequestBody LoginForm form){
         Authentication auth = authManager.authenticate(new UsernamePasswordAuthenticationToken(form.getEmail(), form.getPassword()));
         return jwtProvider.createToken(auth);
     }
 
-//    @GetMapping("/profil")
-//    public UsersDto getUser(@RequestHeader("Authorization") String token){
-//        System.out.println("*******************************\n" + token);
-//        return service.getUserWithToken(token);
-//    }
-
     @GetMapping("/profil")
-    public UsersDto getUser(HttpServletRequest request){
-        return service.getUserWithToken(request);
+    @Secured("ROLE_USER")
+    public UsersDto getUser(Authentication authentication){
+        return service.getUser(authentication.getName());
     }
 }

@@ -29,7 +29,6 @@ public class JwtProvider {
         this.properties = properties;
         this.service = service;
     }
-
     public TokenDto createToken(Authentication auth){
         return new TokenDto(JWT.create()
                 // Declarer les claims du payload
@@ -57,16 +56,18 @@ public class JwtProvider {
             return true;
         }
         catch (JWTVerificationException ex){
-            log.warn(ex.getMessage());
+            System.out.println(ex.getMessage());
             return false;
         }
 
     }
     public Authentication generateAuth(String token) {
         DecodedJWT decodedJWT = JWT.decode(token);
-
         UserDetails user = service.loadUserByUsername( decodedJWT.getSubject() );
-
-        return new UsernamePasswordAuthenticationToken(decodedJWT.getSubject(),null);
+        return new UsernamePasswordAuthenticationToken(
+                decodedJWT.getSubject(),
+                null,
+                user.getAuthorities()
+        );
     }
 }

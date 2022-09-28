@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,6 +55,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         Users user = mapper.formToEntity(form);
         Address addressChecked = addressService.search(form.getAddress());
 
+
         if(addressChecked != null ) {
             user.setAddress(addressChecked);
         }else {
@@ -61,6 +63,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword( encoder.encode(form.getPassword()) );
+        user.setRoles(List.of("USER"));
         return mapper.entityToDto(repository.save( user ));
     }
 
@@ -70,5 +73,8 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         Optional<Users> user = repository.findByEmail(decodedJWT.getSubject() );
         if(user.isPresent()) return mapper.entityToDto( user.get() );
         return null;
+    }
+    public UsersDto getUser(String email) {
+        return mapper.entityToDto(repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Une erreur est survenue")));
     }
 }
