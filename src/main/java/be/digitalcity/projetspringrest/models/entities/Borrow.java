@@ -18,14 +18,6 @@ public class Borrow {
     private LocalDate startBorrow;
     private LocalDate endBorrow;
 
-    @ManyToOne
-    @JoinColumn(name = "omnitheque_id")
-    private Omnitheque omnitheque;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
     @ManyToMany
     @JoinTable(
             name = "borrow_product",
