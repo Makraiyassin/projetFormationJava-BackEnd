@@ -2,8 +2,10 @@ package be.digitalcity.projetspringrest.controllers;
 
 
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
+import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
 import be.digitalcity.projetspringrest.services.OmnithequeService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,6 +28,12 @@ public class OmnithequeController {
     @GetMapping()
     public List<OmnithequeDto> getAll(){
         return service.getAll();
+    }
+
+    @PostMapping("/create")
+    @Secured("ROLE_USER")
+    public OmnithequeDto Create(@RequestBody OmnithequeForm form, Authentication auth){
+        return service.create(form, auth);
     }
 
 }

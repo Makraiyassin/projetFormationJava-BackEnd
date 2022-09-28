@@ -16,14 +16,14 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id:
-            client-secret:
+      ddl-auto: update
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id:
+#            client-secret:
 
 application:
   jwt:
