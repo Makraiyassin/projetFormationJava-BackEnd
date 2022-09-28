@@ -25,16 +25,14 @@ public class OmnithequeService {
     private final AddressMapper addressMapper;
     private final AddressService addressService;
     private final UsersDetailsServiceImpl usersService;
-    private final UsersMapper usersMapper;
 
-    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService, UsersMapper usersMapper) {
+    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService) {
         this.mapper = mapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
         this.addressService = addressService;
         this.usersService = usersService;
-        this.usersMapper = usersMapper;
     }
 
     public OmnithequeDto getOne(Long id){
@@ -55,7 +53,7 @@ public class OmnithequeService {
             omnitheque.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
         }
 
-        return mapper.entityToDto(usersService.addOmnitheque(auth, repository.save( omnitheque )));
+        return mapper.entityToDto(usersService.addOmnitheque(auth,omnitheque));
 
     }
 
@@ -81,5 +79,6 @@ public class OmnithequeService {
         repository.delete(omnitheque);
         return mapper.entityToDto(omnitheque);
     }
+
 
 }
