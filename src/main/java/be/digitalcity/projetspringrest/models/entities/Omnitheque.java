@@ -9,7 +9,6 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Omnitheque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +33,8 @@ public class Omnitheque {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> productList;
+
+    public void addProduct(Product product) {
+        this.productList.add(product);
+    }
 }

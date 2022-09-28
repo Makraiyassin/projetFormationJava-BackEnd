@@ -11,8 +11,6 @@ import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
 import be.digitalcity.projetspringrest.utils.JwtProperties;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,9 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsersDetailsServiceImpl implements UserDetailsService {
@@ -68,7 +63,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword( encoder.encode(form.getPassword()) );
-        user.setRoles(List.of("USER"));
+        user.addRole("USER");
         return mapper.entityToDto(repository.save( user ));
     }
 
@@ -95,6 +90,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     public Omnitheque addOmnitheque(Authentication auth, Omnitheque omnitheque) {
         Users user = repository.findByEmail(auth.getName()).get();
         user.setOmnitheque(omnithequeRepository.save(omnitheque));
+        user.addRole("PRO");
         repository.save(user);
         return omnitheque;
     }

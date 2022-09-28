@@ -16,10 +16,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
+    private int quantity;
+    private String image;
     @Enumerated(EnumType.STRING)
     private Category category;
-
+    private String description;
     @ManyToMany(mappedBy = "productList")
     private List<Borrow> borrowList;
 
