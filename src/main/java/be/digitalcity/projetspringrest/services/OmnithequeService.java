@@ -2,15 +2,15 @@ package be.digitalcity.projetspringrest.services;
 
 import be.digitalcity.projetspringrest.mappers.AddressMapper;
 import be.digitalcity.projetspringrest.mappers.OmnithequeMapper;
-import be.digitalcity.projetspringrest.mappers.UsersMapper;
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
-import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
+import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
-import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
+import be.digitalcity.projetspringrest.repositories.ProductRepository;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +25,16 @@ public class OmnithequeService {
     private final AddressMapper addressMapper;
     private final AddressService addressService;
     private final UsersDetailsServiceImpl usersService;
+    private final ProductRepository productRepository;
 
-    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService) {
+    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService, ProductRepository productRepository) {
         this.mapper = mapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
         this.addressService = addressService;
         this.usersService = usersService;
+        this.productRepository = productRepository;
     }
 
     public OmnithequeDto getOne(Long id){
@@ -80,5 +82,14 @@ public class OmnithequeService {
         return mapper.entityToDto(omnitheque);
     }
 
+
+    public Product addProduct(Authentication auth, long omnithequeId, Product product){
+        if( usersService.getUser(auth.getName()).getOmnitheque().getId() != omnithequeId) throw new RuntimeException("blabla") ;
+
+        Omnitheque omnitheque = repository.findById(omnithequeId).get();
+        omnitheque.addProduct(productRepository.save(product));
+        repository.save(omnitheque);
+        return product;
+    }
 
 }

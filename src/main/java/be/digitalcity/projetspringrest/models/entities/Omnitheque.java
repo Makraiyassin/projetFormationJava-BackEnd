@@ -1,6 +1,7 @@
 package be.digitalcity.projetspringrest.models.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Omnitheque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,15 @@ public class Omnitheque {
 
 
     @ManyToMany
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @JoinTable(
             name = "omnitheque_product",
             joinColumns = @JoinColumn(name = "omnitheque_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> productList;
+
+    public void addProduct(Product product) {
+        this.productList.add(product);
+    }
 }

@@ -1,7 +1,10 @@
 package be.digitalcity.projetspringrest.controllers;
 
 import be.digitalcity.projetspringrest.models.dtos.ProductDto;
+import be.digitalcity.projetspringrest.models.forms.ProductForm;
 import be.digitalcity.projetspringrest.services.ProductService;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,4 +29,21 @@ public class ProductController {
         return service.getAll();
     }
 
+    @PostMapping("/create")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto create(Authentication auth, @RequestBody ProductForm form){
+        return service.create(auth, form);
+    }
+
+    @PatchMapping("/update")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto update(Authentication auth, @RequestBody ProductForm form){
+        return service.update(auth, form);
+    }
+
+    @DeleteMapping("/delete")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto delete( @RequestParam(name = "id") Long id, Authentication auth){
+        return service.delete(id, auth);
+    }
 }

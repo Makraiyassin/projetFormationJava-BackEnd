@@ -12,4 +12,8 @@ public class ProductDto {
     private Long id;
     private String name;
     private Category category;
+    private int quantity;
+    private String image;
+    private String description;
+    private Long omnithequeId;
 }

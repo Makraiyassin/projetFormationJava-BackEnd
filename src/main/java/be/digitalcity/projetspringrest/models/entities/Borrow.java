@@ -1,6 +1,7 @@
 package be.digitalcity.projetspringrest.models.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Borrow {
     private LocalDate endBorrow;
 
     @ManyToMany
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @JoinTable(
             name = "borrow_product",
             joinColumns = @JoinColumn(name = "borrow_id"),
