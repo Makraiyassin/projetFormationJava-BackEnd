@@ -15,4 +15,5 @@ public class ProductDto {
     private int quantity;
     private String image;
     private String description;
+    private Long omnithequeId;
 }

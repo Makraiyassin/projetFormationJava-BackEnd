@@ -14,11 +14,13 @@ import java.util.List;
 @ToString
 public class ProductForm {
     @NotNull
+    private Long id;
+    @NotNull
     @Size(min = 2,max = 255)
     private String name;
     @NotNull
     private Category category;
-    private int quantity;
+    private Integer quantity;
     @NotNull
     private String image;
     @NotNull

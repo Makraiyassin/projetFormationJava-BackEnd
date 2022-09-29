@@ -29,22 +29,21 @@ public class ProductController {
         return service.getAll();
     }
 
-    @PostMapping("/add")
-    @Secured({"ROLE_PRO"})
-    public ProductDto create(Authentication auth, @RequestParam(name = "omnithequeId") Long omnithequeId, @RequestBody ProductForm form){
-        return service.create(auth, omnithequeId, form);
+    @PostMapping("/create")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto create(Authentication auth, @RequestBody ProductForm form){
+        return service.create(auth, form);
     }
 
-    @PatchMapping()
-    @Secured({"ROLE_PRO"})
-    public ProductDto update(Long id, @RequestBody ProductForm form, Authentication auth){
-        return service.update(id,form, auth);
+    @PatchMapping("/update")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto update(Authentication auth, @RequestBody ProductForm form){
+        return service.update(auth, form);
     }
 
-    @DeleteMapping()
-    @Secured({"ROLE_PRO"})
-    public ProductDto delete(Long id, Authentication auth){
+    @DeleteMapping("/delete")
+    @Secured({"ROLE_PRO","ROLE_ADMIN"})
+    public ProductDto delete( @RequestParam(name = "id") Long id, Authentication auth){
         return service.delete(id, auth);
     }
-
 }

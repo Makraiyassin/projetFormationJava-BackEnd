@@ -1,6 +1,7 @@
 package be.digitalcity.projetspringrest.models.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Omnitheque {
 
 
     @ManyToMany
+    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     @JoinTable(
             name = "omnitheque_product",
             joinColumns = @JoinColumn(name = "omnitheque_id"),
