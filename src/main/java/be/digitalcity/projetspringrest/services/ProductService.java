@@ -2,6 +2,7 @@ package be.digitalcity.projetspringrest.services;
 
 import be.digitalcity.projetspringrest.mappers.ProductMapper;
 import be.digitalcity.projetspringrest.models.dtos.ProductDto;
+import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.ProductForm;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
@@ -53,8 +54,8 @@ public class ProductService {
             throw new IllegalArgumentException("le formulaire et l'id ne peuvent pas être null");
 
         Product toUpdate = repository.findById(form.getId()).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+form.getId()+"}"));
-
-        if(usersRepository.findByEmail(auth.getName()).get().getOmnitheque().getProductList().stream().anyMatch(p->p.getId().equals(form.getId())))
+        Omnitheque omnitheque = usersRepository.findByEmail(auth.getName()).get().getOmnitheque();
+        if(omnitheque.getProductList().stream().anyMatch(p->p.getId().equals(form.getId())))
             if(form.getName() != null) toUpdate.setName(form.getName());
             if(form.getCategory() != null) toUpdate.setCategory(form.getCategory());
             if(form.getDescription() != null) toUpdate.setDescription(form.getDescription());
@@ -62,8 +63,9 @@ public class ProductService {
             if(form.getQuantity() != null) toUpdate.setQuantity(form.getQuantity());
             toUpdate = repository.save(toUpdate);
 
-
-        return mapper.entityToDto(toUpdate);
+        ProductDto productDto = mapper.entityToDto(toUpdate);
+        productDto.setOmnithequeId((omnitheque.getId()));
+        return productDto;
     }
 
     public ProductDto delete(Long id, Authentication auth){
