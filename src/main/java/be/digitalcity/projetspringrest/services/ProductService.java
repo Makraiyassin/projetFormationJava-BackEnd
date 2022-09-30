@@ -71,12 +71,9 @@ public class ProductService {
     public ProductDto delete(Long id, Authentication auth){
         if(id == null)
             throw new IllegalArgumentException("l'id ne peut pas être null");
-
-        Product product = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}"));
-        if(usersRepository.findByEmail(auth.getName()).get().getOmnitheque().getProductList().stream().anyMatch(p->p.getId().equals(id)))
-            repository.delete(product);
-        product.setId(null);
-        return mapper.entityToDto(product);
+        ProductForm form = new ProductForm();
+        form.setId(id);
+        form.setQuantity(0);
+        return update(auth, form);
     }
 }
-//TODO: Suppression/modification d'un produit Cascade

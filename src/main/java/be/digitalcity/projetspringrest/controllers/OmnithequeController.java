@@ -2,7 +2,9 @@ package be.digitalcity.projetspringrest.controllers;
 
 
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
+import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
+import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.services.OmnithequeService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -35,5 +37,9 @@ public class OmnithequeController {
     public OmnithequeDto Create(@RequestBody OmnithequeForm form, Authentication auth){
         return service.create(form, auth);
     }
-
+    @PatchMapping("/update")
+    @Secured("ROLE_USER")
+    public OmnithequeDto updateOmnitheque(Authentication auth, @RequestBody OmnithequeForm form){
+        return service.update(auth, form);
+    }
 }

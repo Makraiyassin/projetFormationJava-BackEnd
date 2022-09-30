@@ -1,5 +1,6 @@
 package be.digitalcity.projetspringrest.models.entities;
 
+import antlr.CommonAST;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

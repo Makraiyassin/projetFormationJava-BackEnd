@@ -55,7 +55,6 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         Users user = mapper.formToEntity(form);
         Address addressChecked = addressService.search(form.getAddress());
 
-
         if(addressChecked != null ) {
             user.setAddress(addressChecked);
         }else {
@@ -80,9 +79,17 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         if(form.getLastName() != null) user.setLastName(form.getLastName());
         if(form.getBirthdate() != null) user.setBirthdate(form.getBirthdate());
         if(form.getPhone() != null) user.setPhone(form.getPhone());
-        if(form.getAddress() != null) user.setAddress(addressMapper.formToEntity(form.getAddress()));
         if(form.getEmail() != null) user.setEmail(form.getEmail());
-        if(form.getPassword() != null) user.setPassword(form.getPassword());
+        if(form.getPassword() != null) user.setPassword( encoder.encode(form.getPassword()) );
+
+        if(form.getAddress() != null){
+            Address addressChecked = addressService.search(form.getAddress());
+            if(addressChecked != null ) {
+                user.setAddress(addressChecked);
+            }else {
+                user.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
+            }
+        }
 
         return mapper.entityToDto(repository.save(user));
     }

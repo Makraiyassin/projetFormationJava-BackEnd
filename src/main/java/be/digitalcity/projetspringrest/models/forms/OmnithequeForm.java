@@ -14,6 +14,8 @@ import java.util.List;
 @ToString
 public class OmnithequeForm {
     @NotNull
+    private Long id;
+    @NotNull
     @Size(min = 2,max = 255)
     private String name;
     @NotNull

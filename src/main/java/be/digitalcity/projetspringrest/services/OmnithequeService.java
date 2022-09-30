@@ -59,16 +59,24 @@ public class OmnithequeService {
 
     }
 
-    public OmnithequeDto update(Long id, OmnithequeForm form){
-        if(form == null || id == null)
-            throw new IllegalArgumentException("le formulaire et l'id ne peuvent pas être null");
+    public OmnithequeDto update( Authentication auth, OmnithequeForm form){
+        if( form == null) throw new IllegalArgumentException("le formulaire ne peut pas être null");
 
-        Omnitheque toUpdate = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune omnitheque trouvé avec l'id {"+id+"}"));
+        Omnitheque toUpdate = repository.findById(form.getId()).orElseThrow(()->new EntityNotFoundException("Aucune omnitheque trouvé avec l'id {"+form.getId()+"}"));
 
         if(form.getName() != null) toUpdate.setName(form.getName());
         if(form.getEmail() != null) toUpdate.setEmail(form.getEmail());
-        if(form.getAddress() != null) toUpdate.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
         if(form.getPhone() != null) toUpdate.setPhone(form.getPhone());
+
+        if(form.getAddress() != null) {
+            Address addressChecked = addressService.search(form.getAddress());
+            if(addressChecked != null ) {
+                toUpdate.setAddress(addressChecked);
+            }else {
+                toUpdate.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
+            }
+        }
+
 
         return mapper.entityToDto(repository.save(toUpdate));
     }
