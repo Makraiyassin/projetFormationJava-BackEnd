@@ -95,9 +95,26 @@ public class OmnithequeService {
         if( usersService.getUser(auth.getName()).getOmnitheque().getId() != omnithequeId) throw new RuntimeException("blabla") ;
 
         Omnitheque omnitheque = repository.findById(omnithequeId).get();
+
+        if(omnitheque.getProductList().stream().anyMatch(p ->{
+            return (
+                    p.getName().equals(product.getName()) &&
+                    p.getCategory().equals(product.getCategory())
+            );
+        })){
+            Product productToUpdate = omnitheque.getProductList().stream().filter(p ->{
+                return (
+                        p.getName().equals(product.getName()) &&
+                        p.getCategory().equals(product.getCategory())
+                );
+            }).toList().get(0);
+            if(product.getQuantity() != 0) productToUpdate.setQuantity(product.getQuantity());
+            if(product.getImage() != null) productToUpdate.setImage(product.getImage());
+            if(product.getDescription() != null) productToUpdate.setDescription(product.getDescription());
+            return productRepository.save(productToUpdate);
+        }
         omnitheque.addProduct(productRepository.save(product));
         repository.save(omnitheque);
         return product;
     }
-
 }
