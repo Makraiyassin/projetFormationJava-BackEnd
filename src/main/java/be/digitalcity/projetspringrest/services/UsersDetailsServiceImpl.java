@@ -10,7 +10,6 @@ import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
-import be.digitalcity.projetspringrest.utils.JwtProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,9 +29,8 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     private final OmnithequeRepository omnithequeRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
-    private final JwtProperties jwtProperties;
 
-    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, PasswordEncoder encoder, AddressService addressService, JwtProperties jwtProperties) {
+    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, PasswordEncoder encoder, AddressService addressService) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
@@ -40,7 +38,6 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         this.omnithequeRepository = omnithequeRepository;
         this.encoder = encoder;
         this.addressService = addressService;
-        this.jwtProperties = jwtProperties;
     }
 
     @Override

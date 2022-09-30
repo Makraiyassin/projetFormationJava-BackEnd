@@ -3,7 +3,6 @@ package be.digitalcity.projetspringrest.models.dtos;
 import lombok.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter @Setter
 @NoArgsConstructor

@@ -2,12 +2,10 @@ package be.digitalcity.projetspringrest.models.forms;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor

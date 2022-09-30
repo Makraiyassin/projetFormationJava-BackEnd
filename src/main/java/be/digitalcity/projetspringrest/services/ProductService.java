@@ -5,7 +5,6 @@ import be.digitalcity.projetspringrest.models.dtos.ProductDto;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.ProductForm;
-import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.ProductRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
 import org.springframework.security.core.Authentication;
@@ -20,15 +19,13 @@ public class ProductService {
     private final ProductRepository repository;
     private final OmnithequeService omnithequeService;
     private final UsersRepository usersRepository;
-    private final OmnithequeRepository omnithequeRepository;
 
-    public ProductService(ProductMapper mapper, ProductRepository repository, OmnithequeService omnithequeService, UsersRepository usersRepository, OmnithequeRepository omnithequeRepository) {
+    public ProductService(ProductMapper mapper, ProductRepository repository, OmnithequeService omnithequeService, UsersRepository usersRepository) {
         this.mapper = mapper;
         this.repository = repository;
 
         this.omnithequeService = omnithequeService;
         this.usersRepository = usersRepository;
-        this.omnithequeRepository = omnithequeRepository;
     }
 
     public ProductDto getOne(Long id){

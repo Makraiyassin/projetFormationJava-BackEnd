@@ -2,7 +2,6 @@ package be.digitalcity.projetspringrest.models.dtos;
 
 import be.digitalcity.projetspringrest.utils.Category;
 import lombok.*;
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor

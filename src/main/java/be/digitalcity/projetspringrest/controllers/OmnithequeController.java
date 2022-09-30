@@ -2,15 +2,11 @@ package be.digitalcity.projetspringrest.controllers;
 
 
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
-import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
-import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.services.OmnithequeService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
