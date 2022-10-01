@@ -2,11 +2,8 @@ package be.digitalcity.projetspringrest.models.forms;
 
 import be.digitalcity.projetspringrest.utils.Category;
 import lombok.*;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Getter @Setter
 @NoArgsConstructor
@@ -25,5 +22,4 @@ public class ProductForm {
     private String image;
     @NotNull
     private String description;
-
 }

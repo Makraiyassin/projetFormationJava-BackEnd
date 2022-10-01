@@ -67,7 +67,6 @@ public class Users implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     public void addRole(String role){
         this.roles.add(role);
     }

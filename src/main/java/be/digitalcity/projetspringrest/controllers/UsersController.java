@@ -49,5 +49,6 @@ public class UsersController {
     @Secured("ROLE_USER")
     public UsersDto updateUser(Authentication auth, @RequestBody UsersForm form){
         return service.update(auth, form);
+
     }
 }
