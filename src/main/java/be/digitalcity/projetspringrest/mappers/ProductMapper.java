@@ -12,12 +12,19 @@ public class ProductMapper {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setCategory(entity.getCategory());
+        dto.setQuantity(entity.getQuantity());
+        dto.setImage(entity.getImage());
+        dto.setDescription(entity.getDescription());
+
         return dto;
     }
     public Product formToEntity(ProductForm form){
         Product entity = new Product();
         entity.setName(form.getName());
         entity.setCategory(form.getCategory());
+        entity.setImage(form.getImage());
+        entity.setQuantity(form.getQuantity());
+        entity.setDescription(form.getDescription());
         return entity;
     }
 

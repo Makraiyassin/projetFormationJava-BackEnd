@@ -8,7 +8,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,10 +15,10 @@ import java.util.List;
 @RequestMapping("/api/omnitheque")
 public class OmnithequeController {
     private final OmnithequeService service;
+
     public OmnithequeController(OmnithequeService service) {
         this.service = service;
     }
-
     @GetMapping("/{id:[0-9]+}")
     public OmnithequeDto getOne(@PathVariable long id){
         return service.getOne(id);
@@ -35,5 +34,9 @@ public class OmnithequeController {
     public OmnithequeDto Create(@RequestBody OmnithequeForm form, Authentication auth){
         return service.create(form, auth);
     }
-
+    @PatchMapping("/update")
+    @Secured("ROLE_USER")
+    public OmnithequeDto updateOmnitheque(Authentication auth, @RequestBody OmnithequeForm form){
+        return service.update(auth, form);
+    }
 }

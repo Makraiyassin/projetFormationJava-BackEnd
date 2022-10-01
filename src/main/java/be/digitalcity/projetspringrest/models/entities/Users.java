@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Users implements UserDetails {
     private List<Borrow> borrowList;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,5 +66,11 @@ public class Users implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+    public void addRole(String role){
+        this.roles.add(role);
+    }
+    public void deleteRole(String role){
+        this.roles.remove(role);
     }
 }

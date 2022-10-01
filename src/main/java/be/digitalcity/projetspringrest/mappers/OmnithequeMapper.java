@@ -2,10 +2,7 @@ package be.digitalcity.projetspringrest.mappers;
 
 
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
-import be.digitalcity.projetspringrest.models.entities.Address;
-import be.digitalcity.projetspringrest.models.entities.Borrow;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
-import be.digitalcity.projetspringrest.models.forms.AddressForm;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
 import org.springframework.stereotype.Service;
 

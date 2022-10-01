@@ -2,14 +2,10 @@ package be.digitalcity.projetspringrest.services;
 
 import be.digitalcity.projetspringrest.mappers.AddressMapper;
 import be.digitalcity.projetspringrest.models.dtos.AddressDto;
-import be.digitalcity.projetspringrest.models.dtos.ProductDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
-import be.digitalcity.projetspringrest.models.entities.Omnitheque;
-import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.AddressForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +19,6 @@ public class AddressService {
         this.mapper = mapper;
         this.repository = repository;
     }
-
 
     public AddressDto getOne(Long id){
         Address address = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune addresse trouvé avec l'id {"+id+"}"));

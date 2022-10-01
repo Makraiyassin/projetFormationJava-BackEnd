@@ -3,7 +3,7 @@ package be.digitalcity.projetspringrest.models.forms;
 import lombok.*;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter @Setter
@@ -11,19 +11,19 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 
 public class AddressForm {
-    @NotBlank
+    @NotNull
     @Size(min = 2,max = 255)
     private String street;
-    @NotBlank
+    @NotNull
     @Max(99999)
     private Integer number;
-    @NotBlank
+    @NotNull
     @Max(99999)
     private Integer cp;
-    @NotBlank
+    @NotNull
     @Size(min = 2,max = 255)
     private String city;
-    @NotBlank
+    @NotNull
     @Size(min = 2,max = 255)
     private String country;
 

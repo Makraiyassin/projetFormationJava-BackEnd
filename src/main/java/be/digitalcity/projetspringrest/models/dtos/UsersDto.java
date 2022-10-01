@@ -1,8 +1,6 @@
 package be.digitalcity.projetspringrest.models.dtos;
 
 import lombok.*;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 

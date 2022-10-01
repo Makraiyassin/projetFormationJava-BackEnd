@@ -11,8 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -43,7 +41,14 @@ public class UsersController {
 
     @GetMapping("/profil")
     @Secured("ROLE_USER")
-    public UsersDto getUser(Authentication authentication){
-        return service.getUser(authentication.getName());
+    public UsersDto getUser(Authentication auth){
+        return service.getUser(auth.getName());
+    }
+
+    @PatchMapping("/update")
+    @Secured("ROLE_USER")
+    public UsersDto updateUser(Authentication auth, @RequestBody UsersForm form){
+        return service.update(auth, form);
+
     }
 }

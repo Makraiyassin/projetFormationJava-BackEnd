@@ -10,9 +10,6 @@ import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
-import be.digitalcity.projetspringrest.utils.JwtProperties;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,9 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsersDetailsServiceImpl implements UserDetailsService {
@@ -35,9 +29,8 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     private final OmnithequeRepository omnithequeRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
-    private final JwtProperties jwtProperties;
 
-    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, PasswordEncoder encoder, AddressService addressService, JwtProperties jwtProperties) {
+    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, PasswordEncoder encoder, AddressService addressService) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
@@ -45,7 +38,6 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         this.omnithequeRepository = omnithequeRepository;
         this.encoder = encoder;
         this.addressService = addressService;
-        this.jwtProperties = jwtProperties;
     }
 
     @Override
@@ -60,7 +52,6 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         Users user = mapper.formToEntity(form);
         Address addressChecked = addressService.search(form.getAddress());
 
-
         if(addressChecked != null ) {
             user.setAddress(addressChecked);
         }else {
@@ -68,7 +59,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword( encoder.encode(form.getPassword()) );
-        user.setRoles(List.of("USER"));
+        user.addRole("USER");
         return mapper.entityToDto(repository.save( user ));
     }
 
@@ -85,16 +76,24 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         if(form.getLastName() != null) user.setLastName(form.getLastName());
         if(form.getBirthdate() != null) user.setBirthdate(form.getBirthdate());
         if(form.getPhone() != null) user.setPhone(form.getPhone());
-        if(form.getAddress() != null) user.setAddress(addressMapper.formToEntity(form.getAddress()));
         if(form.getEmail() != null) user.setEmail(form.getEmail());
-        if(form.getPassword() != null) user.setPassword(form.getPassword());
+        if(form.getPassword() != null) user.setPassword( encoder.encode(form.getPassword()) );
 
+        if(form.getAddress() != null){
+            Address addressChecked = addressService.search(form.getAddress());
+            if(addressChecked != null ) {
+                user.setAddress(addressChecked);
+            }else {
+                user.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
+            }
+        }
         return mapper.entityToDto(repository.save(user));
     }
 
     public Omnitheque addOmnitheque(Authentication auth, Omnitheque omnitheque) {
         Users user = repository.findByEmail(auth.getName()).get();
         user.setOmnitheque(omnithequeRepository.save(omnitheque));
+        user.addRole("PRO");
         repository.save(user);
         return omnitheque;
     }
