@@ -9,6 +9,7 @@ import be.digitalcity.projetspringrest.models.entities.Users;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
+import be.digitalcity.projetspringrest.repositories.RolesRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,15 +28,17 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     private final UsersRepository repository;
     private final AddressRepository addressRepository;
     private final OmnithequeRepository omnithequeRepository;
+    private final RolesRepository rolesRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
 
-    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, PasswordEncoder encoder, AddressService addressService) {
+    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.omnithequeRepository = omnithequeRepository;
+        this.rolesRepository = rolesRepository;
         this.encoder = encoder;
         this.addressService = addressService;
     }
@@ -59,7 +62,8 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword( encoder.encode(form.getPassword()) );
-        user.addRole("USER");
+
+        user.addRole(rolesRepository.findByName("USER"));
         return mapper.entityToDto(repository.save( user ));
     }
 
@@ -93,7 +97,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     public Omnitheque addOmnitheque(Authentication auth, Omnitheque omnitheque) {
         Users user = repository.findByEmail(auth.getName()).get();
         user.setOmnitheque(omnithequeRepository.save(omnitheque));
-        user.addRole("PRO");
+        user.addRole(rolesRepository.findByName("PRO"));
         repository.save(user);
         return omnitheque;
     }

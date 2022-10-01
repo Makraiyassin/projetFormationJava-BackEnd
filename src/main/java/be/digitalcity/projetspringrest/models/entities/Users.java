@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -42,13 +40,18 @@ public class Users implements UserDetails {
     )
     private List<Borrow> borrowList;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map((role) -> new SimpleGrantedAuthority("ROLE_"+role))
+                .map((roles) -> new SimpleGrantedAuthority("ROLE_"+ roles.getName()))
                 .toList();
     }
     @Override
@@ -70,7 +73,7 @@ public class Users implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-    public void addRole(String role){
+    public void addRole(Roles role){
         this.roles.add(role);
     }
     public void deleteRole(String role){
