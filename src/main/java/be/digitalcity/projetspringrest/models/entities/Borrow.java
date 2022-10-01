@@ -27,4 +27,7 @@ public class Borrow {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> productList;
+
+    @ManyToOne
+    private Omnitheque omnitheque;
 }

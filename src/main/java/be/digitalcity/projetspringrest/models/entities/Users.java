@@ -36,7 +36,10 @@ public class Users implements UserDetails {
     private Omnitheque omnitheque;
 
     @OneToMany
-    @JoinTable(name = "users_borrow")
+    @JoinTable(
+            name = "users_borrow",
+            inverseJoinColumns = @JoinColumn(name = "borrow_id")
+    )
     private List<Borrow> borrowList;
 
     @ElementCollection(fetch = FetchType.EAGER)

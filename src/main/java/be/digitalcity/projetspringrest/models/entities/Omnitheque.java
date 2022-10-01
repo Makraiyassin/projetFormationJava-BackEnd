@@ -1,8 +1,6 @@
 package be.digitalcity.projetspringrest.models.entities;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,16 +21,19 @@ public class Omnitheque {
     private Address address;
 
     @OneToMany
-    @JoinTable(name = "users_borrow")
+    @JoinTable(
+            name = "omnitheque_borrow",
+            joinColumns = @JoinColumn(name = "omnitheque_id"),
+            inverseJoinColumns=@JoinColumn(name="borrow_id")
+    )
     private List<Borrow> borrowList;
 
 
-    @ManyToMany
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "omnitheque_product",
             joinColumns = @JoinColumn(name = "omnitheque_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
+            inverseJoinColumns=@JoinColumn(name="product_id")
     )
     private List<Product> productList;
 

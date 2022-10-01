@@ -24,6 +24,6 @@ public class Product {
     @ManyToMany(mappedBy = "productList")
     private List<Borrow> borrowList;
 
-    @ManyToMany(mappedBy = "productList")
-    private List<Omnitheque> omnithequeList;
+    @ManyToOne
+    private Omnitheque omnitheque;
 }
