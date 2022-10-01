@@ -15,6 +15,7 @@ public class ProductMapper {
         dto.setQuantity(entity.getQuantity());
         dto.setImage(entity.getImage());
         dto.setDescription(entity.getDescription());
+
         return dto;
     }
     public Product formToEntity(ProductForm form){

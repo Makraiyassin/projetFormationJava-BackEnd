@@ -20,7 +20,6 @@ public class AddressService {
         this.repository = repository;
     }
 
-
     public AddressDto getOne(Long id){
         Address address = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune addresse trouvé avec l'id {"+id+"}"));
         return mapper.entityToDto(address);

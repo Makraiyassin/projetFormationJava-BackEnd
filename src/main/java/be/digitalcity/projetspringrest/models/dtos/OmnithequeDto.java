@@ -8,7 +8,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
 public class OmnithequeDto {
     private Long id;
     private String name;

@@ -12,7 +12,6 @@ import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.ProductRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -57,7 +56,6 @@ public class OmnithequeService {
         return mapper.entityToDto(usersService.addOmnitheque(auth,omnitheque));
 
     }
-
     public OmnithequeDto update( Authentication auth, OmnithequeForm form){
         if( form == null) throw new IllegalArgumentException("le formulaire ne peut pas être null");
 
@@ -75,8 +73,6 @@ public class OmnithequeService {
                 toUpdate.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
             }
         }
-
-
         return mapper.entityToDto(repository.save(toUpdate));
     }
 

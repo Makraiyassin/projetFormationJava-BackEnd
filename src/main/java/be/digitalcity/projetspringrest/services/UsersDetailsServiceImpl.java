@@ -87,7 +87,6 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
                 user.setAddress(addressRepository.save(addressMapper.formToEntity(form.getAddress())));
             }
         }
-
         return mapper.entityToDto(repository.save(user));
     }
 
