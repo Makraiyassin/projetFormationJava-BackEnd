@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +27,11 @@ public class Borrow {
             joinColumns = @JoinColumn(name = "borrow_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
 
     @ManyToOne
     private Omnitheque omnitheque;
+
+    @ManyToOne
+    private Users user;
 }

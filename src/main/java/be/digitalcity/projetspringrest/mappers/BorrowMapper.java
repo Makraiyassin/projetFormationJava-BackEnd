@@ -4,6 +4,8 @@ import be.digitalcity.projetspringrest.models.dtos.BorrowDto;
 import be.digitalcity.projetspringrest.models.entities.Borrow;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
+
 @Service
 public class BorrowMapper {
     private final ProductMapper productMapper;
@@ -18,7 +20,9 @@ public class BorrowMapper {
         dto.setId(entity.getId());
         dto.setStartBorrow(entity.getStartBorrow());
         dto.setEndBorrow(entity.getEndBorrow());
-        dto.setProductDtoList(entity.getProductList().stream().map(productMapper::entityToDto).toList());
+        dto.setUserId(entity.getUser().getId());
+        dto.setOmnithequeId(entity.getOmnitheque().getId());
+        dto.setProductIdList(entity.getProductList().stream().map(p->p.getId()).toList());
         return dto;
     }
 }
