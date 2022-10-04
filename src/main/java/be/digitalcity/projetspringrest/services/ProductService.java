@@ -83,15 +83,15 @@ public class ProductService {
             throw new IllegalArgumentException("l'id ne peut pas être null");
 
 
-//        ProductForm form = new ProductForm();
-//        form.setId(id);
-//        form.setQuantity(0);
-//        return update(auth, form);
+        ProductForm form = new ProductForm();
+        form.setId(id);
+        form.setQuantity(0);
+        return update(auth, form);
 
-//TODO: Verifier que le produit appartient bien à l'omnitheque de l'utilisateur
-        Product product = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}"));
-        repository.delete(product);
-        product.setId(null);
-        return mapper.entityToDto(product);
+////TODO: Verifier que le produit appartient bien à l'omnitheque de l'utilisateur
+//        Product product = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}"));
+//        repository.delete(product);
+//        product.setId(null);
+//        return mapper.entityToDto(product);
     }
 }
