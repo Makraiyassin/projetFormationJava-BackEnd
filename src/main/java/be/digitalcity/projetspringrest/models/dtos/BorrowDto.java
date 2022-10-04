@@ -15,4 +15,5 @@ public class BorrowDto {
     private Long productId;
     private Long OmnithequeId;
     private Long userId;
+    private boolean returned;
 }

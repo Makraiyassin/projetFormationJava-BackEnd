@@ -22,7 +22,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
     private String description;
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinTable(
             name = "borrow_product",
             joinColumns = @JoinColumn(name = "product_id"),

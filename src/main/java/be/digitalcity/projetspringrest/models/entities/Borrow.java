@@ -20,10 +20,12 @@ public class Borrow {
     private LocalDate startBorrow;
     private LocalDate endBorrow;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
     @ManyToOne
     private Omnitheque omnitheque;
     @ManyToOne
     private Users user;
+
+    private boolean returned = false;
 }

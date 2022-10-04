@@ -17,10 +17,15 @@ public class BorrowController {
         this.service = service;
     }
 
-    @PostMapping("one")
+    @PostMapping("")
     @Secured("ROLE_USER")
     public BorrowDto Create(Authentication auth, @RequestParam Long omnithequeId, @RequestParam Long productId){
         return service.create(auth, omnithequeId, productId);
     }
 
+    @PostMapping("return")
+    @Secured("ROLE_USER")
+    public BorrowDto returnProduct(Authentication auth, @RequestParam Long borrowId){
+        return service.returnProduct(auth, borrowId);
+    }
 }

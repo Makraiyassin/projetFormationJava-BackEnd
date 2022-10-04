@@ -14,7 +14,6 @@ public class BorrowMapper {
         this.productMapper = productMapper;
     }
 
-
     public BorrowDto entityToDto(Borrow entity){
         BorrowDto dto = new BorrowDto();
         dto.setId(entity.getId());
@@ -23,6 +22,8 @@ public class BorrowMapper {
         dto.setUserId(entity.getUser().getId());
         dto.setOmnithequeId(entity.getOmnitheque().getId());
         dto.setProductId(entity.getProduct().getId());
+        dto.setReturned(entity.isReturned());
         return dto;
     }
+
 }

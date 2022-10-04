@@ -13,7 +13,9 @@ import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.ProductRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -56,15 +58,16 @@ public class BorrowService {
         if(repository.countAllByUserAndEndBorrowAfter(user,LocalDate.now()) >= 10) throw new UnauthorizedException("vous avez atteint le nombre maximum d'emprunt");
 
         //TODO: verifier que le produit est dispo
-        if(repository.countAllByProductAndEndBorrowAfter(product,LocalDate.now())>= product.getQuantity()) throw  new UnavailableProductException(product.getName()+" est indisponible actuellement");
+        if(repository.countAllByProductAndEndBorrowAfterAndReturnedIsFalse(product,LocalDate.now())>= product.getQuantity()) throw  new UnavailableProductException(product.getName()+" est indisponible actuellement");
 
         //TODO: verifier que l'utilisateur n'a pas un emprunt en cours sur ce meme produits
         if(user.getBorrowList().stream().anyMatch(b -> {
             return(
                     b.getProduct().getId().equals(productId) &&
-                    b.getEndBorrow().isAfter(LocalDate.now())
+                    b.getEndBorrow().isAfter(LocalDate.now()) &&
+                    !b.isReturned()
             );
-        })) throw new UnauthorizedException("Vous avez un emprunt en cours contenant ce produit");
+        })) throw new UnauthorizedException("Vous avez un emprunt en cours contenant le produit avec l'id{"+productId+"}");
 
 
         borrow.setUser(user);
@@ -78,5 +81,28 @@ public class BorrowService {
         usersRepository.save(user);
 
         return mapper.entityToDto(borrow);
+    }
+
+
+    public BorrowDto returnProduct(Authentication auth, @RequestParam Long borrowId){
+        if( borrowId == null ) throw new IllegalArgumentException("l'id de l'emprunt ne peut pas être null");
+
+        Borrow borrow = repository.findById(borrowId).orElseThrow(()-> new EntityNotFoundException("le emprunt avec l'id{"+borrowId+"} n'a été trouver"));
+
+        Users user = usersRepository.findByEmail(auth.getName()).orElseThrow(
+                ()->new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant")
+        );
+        Omnitheque omnitheque;
+
+        if(user.getOmnitheque() != null) omnitheque = user.getOmnitheque();
+        else throw new EntityNotFoundException("aucune omnithque n'a été trouver chez l'utilisateur avec l'id {"+user.getId()+"}");
+
+        if(omnitheque.getBorrowList().stream().noneMatch(b-> b.getId().equals(borrowId)))
+            throw new UnauthorizedException("l'emprunt avec l'id {"+borrowId+"} n'appartient pas à l'omnithèque avec l'id{"+omnitheque.getId()+"}");
+
+        if(borrow.isReturned()) return mapper.entityToDto(borrow);
+        borrow.setReturned(true);
+        return mapper.entityToDto(repository.save(borrow));
+
     }
 }
