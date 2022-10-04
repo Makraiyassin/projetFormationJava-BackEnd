@@ -38,7 +38,8 @@ public class UsersMapper {
         if(entity.getOmnitheque() != null)
             dto.setOmnitheque(omnithequeMapper.entityToDto(entity.getOmnitheque()));
 
-        dto.setBorrowDtoList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
+        if(entity.getBorrowList() != null)
+            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
 
         return dto;
     }

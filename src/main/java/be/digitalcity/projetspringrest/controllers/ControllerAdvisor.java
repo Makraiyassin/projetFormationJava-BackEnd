@@ -1,5 +1,6 @@
 package be.digitalcity.projetspringrest.controllers;
 
+import be.digitalcity.projetspringrest.exceptions.ConnectionErrorException;
 import be.digitalcity.projetspringrest.exceptions.UnauthorizedException;
 import be.digitalcity.projetspringrest.exceptions.UnavailableProductException;
 import be.digitalcity.projetspringrest.models.dtos.ErrorDto;
@@ -83,8 +84,22 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                                 .path( req.getRequestURL().toString() )
                                 .build()
                 );
-    }    @ExceptionHandler(UnavailableProductException.class)
+    }
+    @ExceptionHandler(UnavailableProductException.class)
     public ResponseEntity<ErrorDto> handleException(UnavailableProductException ex, HttpServletRequest req){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorDto.builder()
+                                .message(ex.getMessage())
+                                .receivedAt( LocalDateTime.now() )
+                                .status( HttpStatus.BAD_REQUEST.value() )
+                                .method( HttpMethod.resolve(req.getMethod()) )
+                                .path( req.getRequestURL().toString() )
+                                .build()
+                );
+    }
+    @ExceptionHandler(ConnectionErrorException.class)
+    public ResponseEntity<ErrorDto> handleException(ConnectionErrorException ex, HttpServletRequest req){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         ErrorDto.builder()

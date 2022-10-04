@@ -12,7 +12,7 @@ public class BorrowDto {
     private Long id;
     private LocalDate startBorrow;
     private LocalDate endBorrow;
-    private List<Long> productIdList;
+    private Long productId;
     private Long OmnithequeId;
     private Long userId;
 }

@@ -22,7 +22,7 @@ public class BorrowMapper {
         dto.setEndBorrow(entity.getEndBorrow());
         dto.setUserId(entity.getUser().getId());
         dto.setOmnithequeId(entity.getOmnitheque().getId());
-        dto.setProductIdList(entity.getProductList().stream().map(p->p.getId()).toList());
+        dto.setProductId(entity.getProduct().getId());
         return dto;
     }
 }

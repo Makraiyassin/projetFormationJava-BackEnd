@@ -43,10 +43,12 @@ public class BorrowService {
         borrow.setEndBorrow(LocalDate.now().plusDays(15));
 
         Omnitheque omnitheque = omnithequeRepository.findById(omnithequeId).orElseThrow(() -> new EntityNotFoundException("aucune Omnitheque ne correstpond à l'id {"+omnithequeId+"}"));
-        borrow.setOmnitheque(omnitheque);
-
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("aucun produit ne correstpond à l'id {"+productId+"}"));
-        borrow.getProductList().add(product);
+
+        //TODO: verifier que le produit exist dans l'omnitheque
+        if(!omnitheque.getProductList().contains(product)) throw new EntityNotFoundException("le produit avec l'id{"+productId+"} ne se trouve pas dans l'omnitheque avec l'id{"+omnithequeId+"}");
+        borrow.setOmnitheque(omnitheque);
+        borrow.setProduct(product);
 
         Users user = usersRepository.findByEmail(auth.getName()).orElseThrow(() -> new EntityNotFoundException("aucun utilisateur trouver avec l'email {"+auth.getName()+"}"));
 
@@ -54,16 +56,15 @@ public class BorrowService {
         if(repository.countAllByUserAndEndBorrowAfter(user,LocalDate.now()) >= 10) throw new UnauthorizedException("vous avez atteint le nombre maximum d'emprunt");
 
         //TODO: verifier que le produit est dispo
-        if(repository.countAllByProductListContainsAndEndBorrowAfter(product,LocalDate.now())>= product.getQuantity()) throw  new UnavailableProductException(product.getName()+" est indisponible actuellement");
+        if(repository.countAllByProductAndEndBorrowAfter(product,LocalDate.now())>= product.getQuantity()) throw  new UnavailableProductException(product.getName()+" est indisponible actuellement");
 
         //TODO: verifier que l'utilisateur n'a pas un emprunt en cours sur ce meme produits
         if(user.getBorrowList().stream().anyMatch(b -> {
             return(
-                    b.getProductList().stream().anyMatch(p-> p.getId().equals(productId)) &&
-                            b.getEndBorrow().isAfter(LocalDate.now())
+                    b.getProduct().getId().equals(productId) &&
+                    b.getEndBorrow().isAfter(LocalDate.now())
             );
         })) throw new UnauthorizedException("Vous avez un emprunt en cours contenant ce produit");
-
 
 
         borrow.setUser(user);

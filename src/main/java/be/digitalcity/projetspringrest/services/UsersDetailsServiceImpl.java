@@ -1,5 +1,6 @@
 package be.digitalcity.projetspringrest.services;
 
+import be.digitalcity.projetspringrest.exceptions.ConnectionErrorException;
 import be.digitalcity.projetspringrest.mappers.AddressMapper;
 import be.digitalcity.projetspringrest.mappers.UsersMapper;
 import be.digitalcity.projetspringrest.models.dtos.UsersDto;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import java.net.ConnectException;
 
 @Service
 public class UsersDetailsServiceImpl implements UserDetailsService {
@@ -44,8 +46,11 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("connexion impossible"));
+    public UserDetails loadUserByUsername(String email) throws ConnectionErrorException {
+        if(repository.findByEmail(email).isEmpty()) throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
+        return repository.findByEmail(email).orElseThrow(
+                () -> new UsernameNotFoundException("connexion impossible")
+        );
     }
 
     public UsersDto create(UsersForm form){

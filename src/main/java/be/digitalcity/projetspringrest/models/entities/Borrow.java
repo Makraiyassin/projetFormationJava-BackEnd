@@ -20,18 +20,10 @@ public class Borrow {
     private LocalDate startBorrow;
     private LocalDate endBorrow;
 
-    @ManyToMany
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    @JoinTable(
-            name = "borrow_product",
-            joinColumns = @JoinColumn(name = "borrow_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> productList = new ArrayList<>();
-
+    @ManyToOne
+    private Product product;
     @ManyToOne
     private Omnitheque omnitheque;
-
     @ManyToOne
     private Users user;
 }
