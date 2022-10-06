@@ -93,4 +93,8 @@ public class ProductService {
 //        product.setId(null);
 //        return mapper.entityToDto(product);
     }
+
+    public List<ProductDto> search(String name) {
+        return repository.findAllByNameContaining(name).stream().map(mapper::entityToDto).toList();
+    }
 }

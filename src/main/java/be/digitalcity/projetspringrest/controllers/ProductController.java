@@ -28,6 +28,11 @@ public class ProductController {
         return service.getAll();
     }
 
+    @GetMapping("/search")
+    public List<ProductDto> search(@RequestParam String name){
+        return service.search(name);
+    }
+
     @PostMapping("/create")
     @Secured({"ROLE_PRO","ROLE_ADMIN"})
     public ProductDto create(Authentication auth, @RequestBody ProductForm form){
