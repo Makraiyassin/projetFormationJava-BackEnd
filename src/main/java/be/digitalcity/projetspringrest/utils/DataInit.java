@@ -1,21 +1,6 @@
-//package be.digitalcity.projetspringrest.utils;
-//
-//
-//import be.digitalcity.projetspringrest.models.forms.AddressForm;
-//import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
-//import be.digitalcity.projetspringrest.models.forms.ProductForm;
-//import be.digitalcity.projetspringrest.models.forms.UsersForm;
-//import be.digitalcity.projetspringrest.services.AddressService;
-//import be.digitalcity.projetspringrest.services.OmnithequeService;
-//import be.digitalcity.projetspringrest.services.ProductService;
-//import be.digitalcity.projetspringrest.services.UsersDetailsServiceImpl;
-//import org.springframework.beans.factory.InitializingBean;
-//import org.springframework.stereotype.Service;
-//
-//import java.time.LocalDate;
-//import java.util.Arrays;
-//import java.util.List;
-//
+package be.digitalcity.projetspringrest.utils;
+
+
 //@Service
 //public class DataInit implements InitializingBean {
 //
@@ -68,3 +53,26 @@
 //    }
 //
 //}
+
+import be.digitalcity.projetspringrest.models.entities.Roles;
+import be.digitalcity.projetspringrest.repositories.RolesRepository;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Service;
+
+@Service
+public class DataInit implements InitializingBean {
+    private final RolesRepository rolesRepository;
+
+    public DataInit(RolesRepository rolesRepository) {
+        this.rolesRepository = rolesRepository;
+    }
+
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if(!rolesRepository.existsByName("USER")) rolesRepository.save(new Roles("USER"));
+        if(!rolesRepository.existsByName("PRO")) rolesRepository.save(new Roles("PRO"));
+        if(!rolesRepository.existsByName("ADMIN")) rolesRepository.save(new Roles("ADMIN"));
+    }
+}
+

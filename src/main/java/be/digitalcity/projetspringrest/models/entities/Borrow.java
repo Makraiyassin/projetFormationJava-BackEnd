@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,15 +20,12 @@ public class Borrow {
     private LocalDate startBorrow;
     private LocalDate endBorrow;
 
-    @ManyToMany
-    @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
-    @JoinTable(
-            name = "borrow_product",
-            joinColumns = @JoinColumn(name = "borrow_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> productList;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Product product;
+    @ManyToOne(cascade = CascadeType.ALL)
     private Omnitheque omnitheque;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Users user;
+
+    private boolean returned = false;
 }

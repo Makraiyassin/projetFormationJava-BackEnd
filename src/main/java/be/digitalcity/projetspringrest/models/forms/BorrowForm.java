@@ -12,5 +12,5 @@ import java.util.List;
 public class BorrowForm {
     private LocalDate startBorrow;
     private LocalDate endBorrow;
-    private List<ProductForm> productFormList;
+    private ProductForm product;
 }
