@@ -18,5 +18,5 @@ public class UsersDto {
     private String email;
     private String password;
     private OmnithequeDto omnitheque;
-    private List<BorrowDto> borrowDtoList;
+    private List<BorrowDto> borrowList;
 }

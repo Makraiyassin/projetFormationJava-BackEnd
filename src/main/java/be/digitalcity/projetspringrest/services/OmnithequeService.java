@@ -5,11 +5,9 @@ import be.digitalcity.projetspringrest.mappers.OmnithequeMapper;
 import be.digitalcity.projetspringrest.models.dtos.OmnithequeDto;
 import be.digitalcity.projetspringrest.models.entities.Address;
 import be.digitalcity.projetspringrest.models.entities.Omnitheque;
-import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
 import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
-import be.digitalcity.projetspringrest.repositories.ProductRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
@@ -23,16 +21,14 @@ public class OmnithequeService {
     private final AddressMapper addressMapper;
     private final AddressService addressService;
     private final UsersDetailsServiceImpl usersService;
-    private final ProductRepository productRepository;
 
-    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService, ProductRepository productRepository) {
+    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService) {
         this.mapper = mapper;
         this.repository = repository;
         this.addressRepository = addressRepository;
         this.addressMapper = addressMapper;
         this.addressService = addressService;
         this.usersService = usersService;
-        this.productRepository = productRepository;
     }
 
     public OmnithequeDto getOne(Long id){
@@ -83,33 +79,5 @@ public class OmnithequeService {
         Omnitheque omnitheque = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucune omnitheque trouvé avec l'id {"+id+"}"));
         repository.delete(omnitheque);
         return mapper.entityToDto(omnitheque);
-    }
-
-
-    public Product addProduct(Authentication auth, long omnithequeId, Product product){
-        if( usersService.getUser(auth.getName()).getOmnitheque().getId() != omnithequeId) throw new RuntimeException("blabla") ;
-
-        Omnitheque omnitheque = repository.findById(omnithequeId).get();
-
-        if(omnitheque.getProductList().stream().anyMatch(p ->{
-            return (
-                    p.getName().equals(product.getName()) &&
-                    p.getCategory().equals(product.getCategory())
-            );
-        })){
-            Product productToUpdate = omnitheque.getProductList().stream().filter(p ->{
-                return (
-                        p.getName().equals(product.getName()) &&
-                        p.getCategory().equals(product.getCategory())
-                );
-            }).toList().get(0);
-            if(product.getQuantity() != 0) productToUpdate.setQuantity(product.getQuantity());
-            if(product.getImage() != null) productToUpdate.setImage(product.getImage());
-            if(product.getDescription() != null) productToUpdate.setDescription(product.getDescription());
-            return productRepository.save(productToUpdate);
-        }
-        omnitheque.addProduct(productRepository.save(product));
-        repository.save(omnitheque);
-        return product;
     }
 }

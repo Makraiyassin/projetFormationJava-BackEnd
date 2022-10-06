@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 public class UsersMapper {
     private final AddressMapper addressMapper;
     private final OmnithequeMapper omnithequeMapper;
+    private final BorrowMapper borrowMapper;
 
-    public UsersMapper(AddressMapper addressMapper, OmnithequeMapper omnithequeMapper) {
+    public UsersMapper(AddressMapper addressMapper, OmnithequeMapper omnithequeMapper, BorrowMapper borrowMapper) {
         this.addressMapper = addressMapper;
         this.omnithequeMapper = omnithequeMapper;
+        this.borrowMapper = borrowMapper;
     }
     public Users formToEntity(UsersForm form){
         Users user = new Users();
@@ -35,6 +37,9 @@ public class UsersMapper {
         dto.setAddress(addressMapper.entityToDto(entity.getAddress()));
         if(entity.getOmnitheque() != null)
             dto.setOmnitheque(omnithequeMapper.entityToDto(entity.getOmnitheque()));
+
+        if(entity.getBorrowList() != null)
+            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
 
         return dto;
     }
