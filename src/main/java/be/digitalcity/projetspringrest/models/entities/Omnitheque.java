@@ -20,24 +20,10 @@ public class Omnitheque {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany
-    @JoinTable(
-            name = "omnitheque_borrow",
-            joinColumns = @JoinColumn(name = "omnitheque_id"),
-            inverseJoinColumns=@JoinColumn(name="borrow_id")
-    )
+    @OneToMany(mappedBy = "omnitheque")
     private List<Borrow> borrowList;
 
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "omnitheque_product",
-            joinColumns = @JoinColumn(name = "omnitheque_id"),
-            inverseJoinColumns=@JoinColumn(name="product_id")
-    )
+    @OneToMany(mappedBy = "omnitheque")
     private List<Product> productList;
 
-    public void addProduct(Product product) {
-        this.productList.add(product);
-    }
 }

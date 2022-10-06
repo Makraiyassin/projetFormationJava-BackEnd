@@ -20,14 +20,11 @@ import java.util.List;
 public class ProductService {
     private final ProductMapper mapper;
     private final ProductRepository repository;
-    private final OmnithequeService omnithequeService;
     private final UsersRepository usersRepository;
 
-    public ProductService(ProductMapper mapper, ProductRepository repository, OmnithequeService omnithequeService, UsersRepository usersRepository) {
+    public ProductService(ProductMapper mapper, ProductRepository repository, UsersRepository usersRepository) {
         this.mapper = mapper;
         this.repository = repository;
-
-        this.omnithequeService = omnithequeService;
         this.usersRepository = usersRepository;
     }
 
@@ -42,11 +39,13 @@ public class ProductService {
 
     public ProductDto create(Authentication auth, ProductForm form){
         if( form == null ) throw new IllegalArgumentException("le formulaire et l'id de l'omnitheque ne peuvent pas être null");
+        Long omnithequeId = usersRepository.findByEmail(auth.getName()).orElseThrow(()->
+            new EntityNotFoundException("utilisateur"+auth.getName()+" n'existe pas")
+        ).getOmnitheque().getId();
+
+        form.setOmnithequeId(omnithequeId);
         Product product = mapper.formToEntity( form );
-        Long omnithequeId = usersRepository.findByEmail(auth.getName()).get().getOmnitheque().getId();
-        ProductDto productDto = mapper.entityToDto(omnithequeService.addProduct(auth,omnithequeId, product));
-        productDto.setOmnithequeId((omnithequeId));
-        return productDto;
+        return  mapper.entityToDto(repository.save(product));
     }
 
     public ProductDto update(Authentication auth, ProductForm form){

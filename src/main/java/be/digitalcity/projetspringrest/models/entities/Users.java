@@ -30,14 +30,9 @@ public class Users implements UserDetails {
     private boolean enabled = true;
 
     @OneToOne
-    @JoinColumn(name = "omnitheque_id")
     private Omnitheque omnitheque;
 
-    @OneToMany
-    @JoinTable(
-            name = "users_borrow",
-            inverseJoinColumns = @JoinColumn(name = "borrow_id")
-    )
+    @OneToMany(mappedBy = "user")
     private List<Borrow> borrowList;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

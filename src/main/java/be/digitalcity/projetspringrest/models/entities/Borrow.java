@@ -22,9 +22,9 @@ public class Borrow {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Omnitheque omnitheque;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Users user;
 
     private boolean returned = false;

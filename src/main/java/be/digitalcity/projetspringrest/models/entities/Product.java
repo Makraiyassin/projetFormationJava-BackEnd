@@ -11,25 +11,25 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private int quantity;
+
     private String image;
+
     @Enumerated(EnumType.STRING)
     private Category category;
+
     private String description;
-    @OneToMany(orphanRemoval = true)
-    @JoinTable(
-            name = "borrow_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "borrow_id")
-    )
+
+    @OneToMany(mappedBy = "product")
     private List<Borrow> borrowList;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Omnitheque omnitheque;
 }
