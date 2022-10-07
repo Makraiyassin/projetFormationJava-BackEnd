@@ -13,6 +13,7 @@ public class OmnithequeDto {
     private String name;
     private String phone;
     private String email;
+    private String image;
     private AddressDto address;
     private List<BorrowDto> borrowList;
     private List<ProductDto> productList;

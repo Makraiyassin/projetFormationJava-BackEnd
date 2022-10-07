@@ -26,6 +26,7 @@ public class OmnithequeMapper {
         dto.setPhone(entity.getPhone());
         dto.setEmail(entity.getEmail());
         dto.setAddress(adressMapper.entityToDto(entity.getAddress()));
+        dto.setImage(entity.getImage());
         if(entity.getBorrowList() != null)
             dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
         if(entity.getProductList() != null)
@@ -38,6 +39,7 @@ public class OmnithequeMapper {
         entity.setName(form.getName());
         entity.setEmail(form.getEmail());
         entity.setPhone(form.getPhone());
+        entity.setImage(form.getImage());
         return entity;
     }
 }
