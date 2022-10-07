@@ -21,6 +21,7 @@ public class ProductForm {
     @NotNull
     private String image;
     @NotNull
+    @Size(max = 2_000)
     private String description;
     private Long omnithequeId;
 }

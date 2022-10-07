@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -25,6 +26,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Column(length = 2_000)
     private String description;
 
     @OneToMany(mappedBy = "product")
