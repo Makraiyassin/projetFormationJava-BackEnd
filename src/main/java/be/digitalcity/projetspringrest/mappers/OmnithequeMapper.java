@@ -6,6 +6,8 @@ import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.models.forms.OmnithequeForm;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 public class OmnithequeMapper {
     private final AddressMapper adressMapper;
@@ -28,9 +30,9 @@ public class OmnithequeMapper {
         dto.setAddress(adressMapper.entityToDto(entity.getAddress()));
         dto.setImage(entity.getImage());
         if(entity.getBorrowList() != null)
-            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
+            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).collect(Collectors.toList()));
         if(entity.getProductList() != null)
-            dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).toList());
+            dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).collect(Collectors.toList()));
         return dto;
     }
 

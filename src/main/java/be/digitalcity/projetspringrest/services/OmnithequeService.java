@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OmnithequeService {
@@ -36,7 +37,8 @@ public class OmnithequeService {
         return mapper.entityToDto(omnitheque);
     }
     public List<OmnithequeDto> getAll(){
-        return repository.findAll().stream().map(mapper::entityToDto).toList();
+        return repository.findAll().stream().map(mapper::entityToDto).collect(Collectors.toList());
+
     }
 
     public OmnithequeDto create(OmnithequeForm form, Authentication auth){

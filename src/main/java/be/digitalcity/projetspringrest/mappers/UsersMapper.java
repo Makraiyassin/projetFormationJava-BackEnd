@@ -6,6 +6,8 @@ import be.digitalcity.projetspringrest.models.entities.Users;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
 import org.springframework.stereotype.Service;
 
+import java.util.stream.Collectors;
+
 @Service
 public class UsersMapper {
     private final AddressMapper addressMapper;
@@ -39,7 +41,7 @@ public class UsersMapper {
             dto.setOmnitheque(omnithequeMapper.entityToDto(entity.getOmnitheque()));
 
         if(entity.getBorrowList() != null)
-            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).toList());
+            dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).collect(Collectors.toList()));
 
         return dto;
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AddressService {
@@ -26,7 +27,7 @@ public class AddressService {
     }
 
     public List<AddressDto> getAll(){
-        return repository.findAll().stream().map(mapper::entityToDto).toList();
+        return repository.findAll().stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     public AddressDto create(AddressForm form){

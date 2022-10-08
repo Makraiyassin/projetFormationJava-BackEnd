@@ -47,7 +47,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws ConnectionErrorException {
-        if(repository.findByEmail(email).isEmpty()) throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
+        if(!repository.findByEmail(email).isPresent()) throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
         return repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("connexion impossible")
         );

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -37,7 +38,7 @@ public class ProductService {
     }
 
     public List<ProductDto> getAll(){
-        return repository.findAll().stream().map(mapper::entityToDto).toList();
+        return repository.findAll().stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     public ProductDto create(Authentication auth, ProductForm form){
@@ -106,7 +107,7 @@ public class ProductService {
     }
 
     public List<ProductDto> search(String name) {
-        return repository.findAllByNameContaining(name).stream().map(mapper::entityToDto).toList();
+        return repository.findAllByNameContaining(name).stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     public Product updateIfProductExist(Omnitheque omnitheque, Product product) {
@@ -121,7 +122,7 @@ public class ProductService {
                         p.getName().equals(product.getName()) &&
                         p.getCategory().equals(product.getCategory())
                 );
-            }).toList().get(0);
+            }).collect(Collectors.toList()).get(0);
             if(product.getQuantity() != 0) productToUpdate.setQuantity(product.getQuantity());
             if(product.getImage() != null) productToUpdate.setImage(product.getImage());
             if(product.getDescription() != null) productToUpdate.setDescription(product.getDescription());

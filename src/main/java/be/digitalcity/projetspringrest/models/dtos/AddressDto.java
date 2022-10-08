@@ -4,7 +4,6 @@ import lombok.*;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class AddressDto {
     private Long id;
     private String street;
