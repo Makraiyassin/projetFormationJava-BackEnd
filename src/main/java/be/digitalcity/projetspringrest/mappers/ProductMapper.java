@@ -6,14 +6,16 @@ import be.digitalcity.projetspringrest.models.forms.ProductForm;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductMapper {
     private final OmnithequeRepository omnithequeRepository;
+    private final BorrowMapper borrowMapper;
 
-    public ProductMapper(OmnithequeRepository omnithequeRepository) {
+    public ProductMapper(OmnithequeRepository omnithequeRepository, BorrowMapper borrowMapper) {
         this.omnithequeRepository = omnithequeRepository;
+        this.borrowMapper = borrowMapper;
     }
 
     public ProductDto entityToDto(Product entity){
@@ -24,6 +26,7 @@ public class ProductMapper {
         dto.setQuantity(entity.getQuantity());
         dto.setImage(entity.getImage());
         dto.setDescription(entity.getDescription());
+        if(entity.getBorrowList() != null) dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).collect(Collectors.toList()));
         if(entity.getOmnitheque() != null) dto.setOmnithequeId(entity.getOmnitheque().getId());
 
         return dto;
@@ -35,9 +38,6 @@ public class ProductMapper {
         entity.setImage(form.getImage());
         entity.setQuantity(form.getQuantity());
         entity.setDescription(form.getDescription());
-//        entity.setOmnitheque(omnithequeRepository.findById(form.getOmnithequeId()).orElseThrow(
-//                ()->new EntityNotFoundException("aucune omnitheque trouvé avec l'id {"+form.getOmnithequeId()+"}")
-//        ));
         return entity;
     }
 
