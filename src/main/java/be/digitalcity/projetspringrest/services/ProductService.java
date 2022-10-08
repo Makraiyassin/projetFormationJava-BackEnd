@@ -7,6 +7,7 @@ import be.digitalcity.projetspringrest.models.entities.Omnitheque;
 import be.digitalcity.projetspringrest.models.entities.Product;
 import be.digitalcity.projetspringrest.models.entities.Users;
 import be.digitalcity.projetspringrest.models.forms.ProductForm;
+import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.ProductRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
 import org.springframework.security.core.Authentication;
@@ -20,11 +21,13 @@ import java.util.List;
 public class ProductService {
     private final ProductMapper mapper;
     private final ProductRepository repository;
+    private final OmnithequeRepository omnithequeRepository;
     private final UsersRepository usersRepository;
 
-    public ProductService(ProductMapper mapper, ProductRepository repository, UsersRepository usersRepository) {
+    public ProductService(ProductMapper mapper, ProductRepository repository, OmnithequeRepository omnithequeRepository, UsersRepository usersRepository) {
         this.mapper = mapper;
         this.repository = repository;
+        this.omnithequeRepository = omnithequeRepository;
         this.usersRepository = usersRepository;
     }
 
@@ -38,13 +41,21 @@ public class ProductService {
     }
 
     public ProductDto create(Authentication auth, ProductForm form){
-        if( form == null ) throw new IllegalArgumentException("le formulaire et l'id de l'omnitheque ne peuvent pas être null");
+        if( form == null ) throw new IllegalArgumentException("le formulaire ne peut pas être null");
         Long omnithequeId = usersRepository.findByEmail(auth.getName()).orElseThrow(()->
             new EntityNotFoundException("utilisateur"+auth.getName()+" n'existe pas")
         ).getOmnitheque().getId();
 
         form.setOmnithequeId(omnithequeId);
         Product product = mapper.formToEntity( form );
+
+        Omnitheque omnitheque = omnithequeRepository.findById(omnithequeId).orElseThrow(
+                ()->new EntityNotFoundException("aucune omnitheque trouvé avec l'id {"+form.getOmnithequeId()+"}")
+        );
+
+        product.setOmnitheque(omnitheque);
+        product = updateIfProductExist(omnitheque,product);
+
         return  mapper.entityToDto(repository.save(product));
     }
 
@@ -87,7 +98,7 @@ public class ProductService {
         form.setQuantity(0);
         return update(auth, form);
 
-////TODO: Verifier que le produit appartient bien à l'omnitheque de l'utilisateur
+//      TODO: Verifier que le produit appartient bien à l'omnitheque de l'utilisateur
 //        Product product = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}"));
 //        repository.delete(product);
 //        product.setId(null);
@@ -97,4 +108,27 @@ public class ProductService {
     public List<ProductDto> search(String name) {
         return repository.findAllByNameContaining(name).stream().map(mapper::entityToDto).toList();
     }
+
+    public Product updateIfProductExist(Omnitheque omnitheque, Product product) {
+        if(omnitheque.getProductList().stream().anyMatch(p ->{
+            return (
+                    p.getName().equals(product.getName()) &&
+                    p.getCategory().equals(product.getCategory())
+            );
+        })){
+            Product productToUpdate = omnitheque.getProductList().stream().filter(p ->{
+                return (
+                        p.getName().equals(product.getName()) &&
+                        p.getCategory().equals(product.getCategory())
+                );
+            }).toList().get(0);
+            if(product.getQuantity() != 0) productToUpdate.setQuantity(product.getQuantity());
+            if(product.getImage() != null) productToUpdate.setImage(product.getImage());
+            if(product.getDescription() != null) productToUpdate.setDescription(product.getDescription());
+            return productToUpdate;
+        }
+        return product;
+    }
 }
+
+

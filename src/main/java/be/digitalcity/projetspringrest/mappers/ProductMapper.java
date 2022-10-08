@@ -35,9 +35,9 @@ public class ProductMapper {
         entity.setImage(form.getImage());
         entity.setQuantity(form.getQuantity());
         entity.setDescription(form.getDescription());
-        entity.setOmnitheque(omnithequeRepository.findById(form.getOmnithequeId()).orElseThrow(
-                ()->new EntityNotFoundException("aucune omnitheque trouvé avec l'id {"+form.getOmnithequeId()+"}")
-        ));
+//        entity.setOmnitheque(omnithequeRepository.findById(form.getOmnithequeId()).orElseThrow(
+//                ()->new EntityNotFoundException("aucune omnitheque trouvé avec l'id {"+form.getOmnithequeId()+"}")
+//        ));
         return entity;
     }
 
