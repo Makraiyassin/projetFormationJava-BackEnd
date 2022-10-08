@@ -62,6 +62,7 @@ public class OmnithequeService {
         if(form.getName() != null) toUpdate.setName(form.getName());
         if(form.getEmail() != null) toUpdate.setEmail(form.getEmail());
         if(form.getPhone() != null) toUpdate.setPhone(form.getPhone());
+        if(form.getImage() != null) toUpdate.setImage(form.getImage());
 
         if(form.getAddress() != null) {
             Address addressChecked = addressService.search(form.getAddress());
