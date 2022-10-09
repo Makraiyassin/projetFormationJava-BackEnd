@@ -18,7 +18,6 @@ public class ProductForm {
     @NotNull
     private Category category;
     private Integer quantity;
-    @NotNull
     private String image;
     @NotNull
     @Size(max = 2_000)

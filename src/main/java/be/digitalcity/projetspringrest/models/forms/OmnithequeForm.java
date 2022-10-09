@@ -23,4 +23,5 @@ public class OmnithequeForm {
     private String email;
     @NotNull
     private AddressForm address;
+    private String image;
 }

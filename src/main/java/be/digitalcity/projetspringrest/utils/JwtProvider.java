@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -37,7 +38,7 @@ public class JwtProvider {
                         "roles",
                         auth.getAuthorities().stream()
                                 .map(GrantedAuthority::getAuthority)
-                                .toList()
+                                .collect(Collectors.toList())
                 )
                 // Declarer la signature
                 .sign( Algorithm.HMAC512(properties.getSecret()) )
