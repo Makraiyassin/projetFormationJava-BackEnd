@@ -8,11 +8,6 @@ import javax.persistence.Entity;
 
 @Service
 public class BorrowMapper {
-    private final ProductMapper productMapper;
-
-    public BorrowMapper(ProductMapper productMapper) {
-        this.productMapper = productMapper;
-    }
 
     public BorrowDto entityToDto(Borrow entity){
         BorrowDto dto = new BorrowDto();

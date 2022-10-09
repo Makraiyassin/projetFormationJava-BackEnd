@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
@@ -47,7 +48,7 @@ public class Users implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
                 .map((roles) -> new SimpleGrantedAuthority("ROLE_"+ roles.getName()))
-                .toList();
+                .collect(Collectors.toList());
     }
     @Override
     public String getUsername() {

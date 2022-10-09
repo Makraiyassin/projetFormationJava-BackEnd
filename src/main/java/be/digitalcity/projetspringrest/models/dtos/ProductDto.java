@@ -3,6 +3,8 @@ package be.digitalcity.projetspringrest.models.dtos;
 import be.digitalcity.projetspringrest.utils.Category;
 import lombok.*;
 
+import java.util.List;
+
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +17,5 @@ public class ProductDto {
     private String image;
     private String description;
     private Long omnithequeId;
+    private List<BorrowDto> borrowList;
 }

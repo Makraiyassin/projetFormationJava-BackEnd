@@ -6,6 +6,8 @@ import be.digitalcity.projetspringrest.services.ProductService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,15 +30,20 @@ public class ProductController {
         return service.getAll();
     }
 
+    @GetMapping("/search")
+    public List<ProductDto> search(@RequestParam String name){
+        return service.search(name);
+    }
+
     @PostMapping("/create")
     @Secured({"ROLE_PRO","ROLE_ADMIN"})
-    public ProductDto create(Authentication auth, @RequestBody ProductForm form){
+    public ProductDto create(Authentication auth,@Valid  @RequestBody ProductForm form){
         return service.create(auth, form);
     }
 
     @PatchMapping("/update")
     @Secured({"ROLE_PRO","ROLE_ADMIN"})
-    public ProductDto update(Authentication auth, @RequestBody ProductForm form){
+    public ProductDto update(Authentication auth,@Valid @RequestBody ProductForm form){
         return service.update(auth, form);
     }
 

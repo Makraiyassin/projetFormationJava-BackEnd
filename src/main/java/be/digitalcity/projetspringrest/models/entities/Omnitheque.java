@@ -15,6 +15,8 @@ public class Omnitheque {
     private String name;
     private String phone;
     private String email;
+    private String image;
+
 
     @ManyToOne
     @JoinColumn(name = "address_id")
