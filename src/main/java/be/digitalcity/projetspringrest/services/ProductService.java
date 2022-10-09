@@ -107,7 +107,7 @@ public class ProductService {
     }
 
     public List<ProductDto> search(String name) {
-        return repository.findAllByNameContaining(name).stream().map(mapper::entityToDto).collect(Collectors.toList());
+        return repository.findAllByNameContainingOrDescriptionContaining(name,name).stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     public Product updateIfProductExist(Omnitheque omnitheque, Product product) {
