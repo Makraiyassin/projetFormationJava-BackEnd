@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,25 +88,25 @@ public class PostService {
         return postDto;
     }
 
-    public PostDto delete(Long id, Authentication auth){
-        if(id == null)
+    public PostDto delete(Long id, Authentication auth) {
+        if (id == null)
             throw new IllegalArgumentException("l'id ne peut pas être null");
 
-        if(usersRepository.findByEmail(auth.getName()).isPresent()){
-            Users user = usersRepository.findByEmail(auth.getName()).get();
-            if(user.getOmnitheque() != null) {
-                Omnitheque omnitheque = user.getOmnitheque();
-                if(omnitheque.getPostList().stream().anyMatch(p -> p.getId().equals(id))){
-                    Post post = omnitheque.getPostList().stream().findFirst().orElseThrow(
-                            ()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}")
-                    );
-                    repository.delete(post);
-                    post.setId(null);
-                    return mapper.entityToDto(post);
-                }else throw new EntityNotFoundException("l'omnitheque avec l'id {"+omnitheque.getId()+"} ne possede le post avec l'id {"+id+"}");
-            }
-            else throw new EntityNotFoundException("l'utilisateur avec l'id {"+user.getId()+"} ne possede pas d'omnitheque");
-        } else  throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
+        if (!usersRepository.findByEmail(auth.getName()).isPresent())
+            throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
+
+        Users user = usersRepository.findByEmail(auth.getName()).get();
+
+        if (user.getOmnitheque() == null)
+            throw new EntityNotFoundException("l'utilisateur avec l'id {" + user.getId() + "} ne possede pas d'omnitheque");
+
+//        if (user.getOmnitheque().getPostList().stream().noneMatch(p -> p.getId().equals(id)))
+//            throw new EntityNotFoundException("l'omnitheque avec l'id {" + user.getOmnitheque().getId() + "} ne possede le post avec l'id {" + id + "}");
+
+        Post post = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aucun produit trouvé avec l'id {" + id + "}"));
+        repository.delete(post);
+        post.setId(null);
+        return mapper.entityToDto(post);
     }
 
     public List<PostDto> search(String word) {
