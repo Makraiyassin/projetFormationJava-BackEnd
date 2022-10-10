@@ -28,7 +28,7 @@ public class Omnitheque {
     @OneToMany(mappedBy = "omnitheque")
     private List<Product> productList;
 
-    @OneToMany(mappedBy = "omnitheque")
+    @OneToMany(mappedBy = "omnitheque", cascade = CascadeType.ALL)
     private List<Post> postList;
 
 }

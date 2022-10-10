@@ -22,6 +22,6 @@ public class Post {
     private String content;
     private String image;
     private LocalDate date;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Omnitheque omnitheque;
 }

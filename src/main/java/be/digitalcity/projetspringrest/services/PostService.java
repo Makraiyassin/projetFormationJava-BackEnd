@@ -90,13 +90,22 @@ public class PostService {
     public PostDto delete(Long id, Authentication auth){
         if(id == null)
             throw new IllegalArgumentException("l'id ne peut pas être null");
-        
-//      TODO: Verifier que le post appartient bien à l'omnitheque de l'utilisateur
 
-        Post post = repository.findById(id).orElseThrow(()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}"));
-        repository.delete(post);
-        post.setId(null);
-        return mapper.entityToDto(post);
+        if(usersRepository.findByEmail(auth.getName()).isPresent()){
+            Users user = usersRepository.findByEmail(auth.getName()).get();
+            if(user.getOmnitheque() != null) {
+                Omnitheque omnitheque = user.getOmnitheque();
+                if(omnitheque.getPostList().stream().anyMatch(p -> p.getId().equals(id))){
+                    Post post = omnitheque.getPostList().stream().findFirst().orElseThrow(
+                            ()->new EntityNotFoundException("Aucun produit trouvé avec l'id {"+id+"}")
+                    );
+                    repository.delete(post);
+                    post.setId(null);
+                    return mapper.entityToDto(post);
+                }else throw new EntityNotFoundException("l'omnitheque avec l'id {"+omnitheque.getId()+"} ne possede le post avec l'id {"+id+"}");
+            }
+            else throw new EntityNotFoundException("l'utilisateur avec l'id {"+user.getId()+"} ne possede pas d'omnitheque");
+        } else  throw new UsernameNotFoundException("Une erreur est survenu lors de la connexion. veuillez verifier votre identifiant");
     }
 
     public List<PostDto> search(String word) {
