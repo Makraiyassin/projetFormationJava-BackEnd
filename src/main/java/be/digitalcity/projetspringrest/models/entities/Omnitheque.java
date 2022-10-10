@@ -28,4 +28,7 @@ public class Omnitheque {
     @OneToMany(mappedBy = "omnitheque")
     private List<Product> productList;
 
+    @OneToMany(mappedBy = "omnitheque")
+    private List<Post> postList;
+
 }
