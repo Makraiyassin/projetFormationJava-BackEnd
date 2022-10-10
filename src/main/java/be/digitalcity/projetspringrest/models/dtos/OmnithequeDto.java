@@ -17,4 +17,5 @@ public class OmnithequeDto {
     private AddressDto address;
     private List<BorrowDto> borrowList;
     private List<ProductDto> productList;
+    private List<PostDto> postList;
 }

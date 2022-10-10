@@ -29,6 +29,6 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Borrow> borrowList;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Omnitheque omnitheque;
 }

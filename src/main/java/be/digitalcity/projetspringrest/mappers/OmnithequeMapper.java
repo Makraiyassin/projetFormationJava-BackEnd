@@ -13,11 +13,15 @@ public class OmnithequeMapper {
     private final AddressMapper adressMapper;
     private final ProductMapper productMapper;
     private final BorrowMapper borrowMapper;
+    private final PostMapper postMapper;
 
-    public OmnithequeMapper(AddressMapper adressMapper, ProductMapper productMapper, BorrowMapper borrowMapper) {
+
+
+    public OmnithequeMapper(AddressMapper adressMapper, ProductMapper productMapper, BorrowMapper borrowMapper, PostMapper postMapper) {
         this.adressMapper = adressMapper;
         this.productMapper = productMapper;
         this.borrowMapper = borrowMapper;
+        this.postMapper = postMapper;
     }
 
     public OmnithequeDto entityToDto(Omnitheque entity){
@@ -33,6 +37,8 @@ public class OmnithequeMapper {
             dto.setBorrowList(entity.getBorrowList().stream().map(borrowMapper::entityToDto).collect(Collectors.toList()));
         if(entity.getProductList() != null)
             dto.setProductList(entity.getProductList().stream().map(productMapper::entityToDto).collect(Collectors.toList()));
+        if(entity.getPostList() != null)
+            dto.setPostList(entity.getPostList().stream().map(postMapper::entityToDto).collect(Collectors.toList()));
         return dto;
     }
 
