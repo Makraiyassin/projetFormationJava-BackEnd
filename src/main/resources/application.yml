@@ -1,0 +1,21 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+application:
+  jwt:
+    secret: ${JWT_SECRET:secret}
+    expiresAt: 30
+    headerPrefix: "Bearer "
+    headerKey: "Authorization"
