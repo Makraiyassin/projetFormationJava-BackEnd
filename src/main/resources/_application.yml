@@ -1,33 +1,27 @@
 server:
-  port: 8080
+  port: <PORT>
 
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
-    username: postgres
-    password:
-    driver-class-name: org.postgresql.Driver
-#    datasource:
-#      url: jdbc:mysql://localhost:3306/db_projet_spring_rest
-#      username: root
-#      password:
-#      driver-class-name: com.mysql.jdbc.Driver
+    datasource:
+      url: jdbc:postgresql://localhost:5432/<DB-NAME>
+      username: <USERNAME>
+      password: <PASSWORD>
+      driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/<DB-NAME>
+#    username: <USERNAME>
+#    password: <PASSWORD>
+#    driver-class-name: com.mysql.jdbc.Driver
+
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id:
-#            client-secret:
 
 application:
   jwt:
-    secret:
-    expiresAt:
+    secret: "Y2nr@Svs1#Rume@v9^r$$hwTm563QpxLfdDTO$VdLLMnNRJmcQ"
+    expiresAt: 30
     headerPrefix: "Bearer "
     headerKey: "Authorization"
