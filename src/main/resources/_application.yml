@@ -1,38 +1,32 @@
 server:
-  port: <PORT>
+  port: 8082
 
 spring:
-    datasource:
-      url: jdbc:postgresql://localhost:5432/<DB-NAME>
-      username: <USERNAME>
-      password: <PASSWORD>
-      driver-class-name: org.postgresql.Driver
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/<DB-NAME>
-#    username: <USERNAME>
-#    password: <PASSWORD>
-#    driver-class-name: com.mysql.jdbc.Driver
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest2
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
 
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username:
-      password:
-      properties:
-        mail:
-          smtp:
-            auth: true
-            starttls:
-              enable: true
-
-    jpa:
+  jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 application:
   jwt:
-    secret: "Y2nr@Svs1#Rume@v9^r$$hwTm563QpxLfdDTO$VdLLMnNRJmcQ"
+    secret: ${JWT_SECRET:secret}
     expiresAt: 30
     headerPrefix: "Bearer "
     headerKey: "Authorization"

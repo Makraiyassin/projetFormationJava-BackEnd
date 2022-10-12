@@ -44,6 +44,8 @@ public class Users implements UserDetails {
     )
     private Set<Roles> roles = new HashSet<>();
 
+    private String verificationCode;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()

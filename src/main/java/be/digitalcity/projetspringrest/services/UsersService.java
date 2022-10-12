@@ -12,14 +12,21 @@ import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.RolesRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -70,6 +77,12 @@ public class UsersService implements UserDetailsService {
         user.setPassword( encoder.encode(form.getPassword()) );
 
         user.addRole(rolesRepository.findByName("USER"));
+
+        String randomCode = RandomString.make(64);
+        user.setVerificationCode(randomCode);
+
+        sendVerificationEmail(user);
+
         return mapper.entityToDto(repository.save( user ));
     }
 
@@ -101,10 +114,44 @@ public class UsersService implements UserDetailsService {
     }
 
     public Omnitheque addOmnitheque(Authentication auth, Omnitheque omnitheque) {
-        Users user = repository.findByEmail(auth.getName()).get();
+        Users user = repository.findByEmail(auth.getName()).orElseThrow(
+                ()->new EntityNotFoundException("aucun utilisateur trouver avec cet email")
+        );
         user.setOmnitheque(omnithequeRepository.save(omnitheque));
         user.addRole(rolesRepository.findByName("PRO"));
         repository.save(user);
         return omnitheque;
+    }
+
+    private void sendVerificationEmail(Users user) {
+        String toAddress = user.getEmail();
+        String fromAddress = "m.hellodev@gmail.com";
+        String senderName = "l'Omnitheque";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "Your company name.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        content = content.replace("[[name]]", user.getFirstName());
+        String verifyURL = "http://localhost:4200/verify?code=" + user.getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        try {
+            helper.setFrom(fromAddress, senderName);
+            helper.setTo(toAddress);
+            helper.setSubject(subject);
+            helper.setText(content, true);
+
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+
+        mailSender.send(message);
     }
 }

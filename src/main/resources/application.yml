@@ -14,9 +14,9 @@ spring:
       ddl-auto: update
   mail:
     host: smtp.gmail.com
-    port: 587
-    username: m.hellodev@gmail.com
-    password: Azerty92-
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
