@@ -28,7 +28,7 @@ public class Users implements UserDetails {
     private String phone;
     private String email;
     private String password;
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     @OneToOne
     private Omnitheque omnitheque;

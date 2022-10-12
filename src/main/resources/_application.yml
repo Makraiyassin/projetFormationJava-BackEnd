@@ -13,8 +13,19 @@ spring:
 #    password: <PASSWORD>
 #    driver-class-name: com.mysql.jdbc.Driver
 
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username: m.hellodev@gmail.com
+      password: Azerty92-
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
 
-  jpa:
+    jpa:
     show-sql: true
     hibernate:
       ddl-auto: update

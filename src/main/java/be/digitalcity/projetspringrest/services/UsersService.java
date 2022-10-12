@@ -18,12 +18,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityExistsException;
-import java.net.ConnectException;
 
 @Service
-public class UsersDetailsServiceImpl implements UserDetailsService {
+public class UsersService implements UserDetailsService {
 
     private final UsersMapper mapper;
     private final AddressMapper addressMapper;
@@ -33,8 +31,7 @@ public class UsersDetailsServiceImpl implements UserDetailsService {
     private final RolesRepository rolesRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
-
-    public UsersDetailsServiceImpl(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService) {
+    public UsersService(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService ) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
