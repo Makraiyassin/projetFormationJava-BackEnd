@@ -12,6 +12,7 @@ import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.RolesRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +32,9 @@ public class UsersService implements UserDetailsService {
     private final RolesRepository rolesRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
-    public UsersService(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService ) {
+    private final JavaMailSender mailSender;
+
+    public UsersService(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService, JavaMailSender mailSender) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
@@ -40,6 +43,7 @@ public class UsersService implements UserDetailsService {
         this.rolesRepository = rolesRepository;
         this.encoder = encoder;
         this.addressService = addressService;
+        this.mailSender = mailSender;
     }
 
     @Override
