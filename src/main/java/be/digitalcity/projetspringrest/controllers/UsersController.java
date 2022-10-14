@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/"})
+@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/","https://omnitheque.herokuapp.com/"})
 @RequestMapping("/api/user")
 public class UsersController {
 
@@ -30,6 +30,7 @@ public class UsersController {
 
     @PostMapping("/register")
     public UsersDto createUser(@Valid @RequestBody UsersForm form){
+        System.out.println(form);
         return service.create(form);
     }
 

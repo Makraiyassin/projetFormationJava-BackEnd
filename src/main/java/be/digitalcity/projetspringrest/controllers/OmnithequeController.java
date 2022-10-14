@@ -8,10 +8,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/"})
+@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/","https://omnitheque.herokuapp.com/"})
 @RequestMapping("/api/omnitheque")
 public class OmnithequeController {
     private final OmnithequeService service;
@@ -31,7 +32,7 @@ public class OmnithequeController {
 
     @PostMapping("/create")
     @Secured("ROLE_USER")
-    public OmnithequeDto Create(@RequestBody OmnithequeForm form, Authentication auth){
+    public OmnithequeDto Create(@Valid @RequestBody OmnithequeForm form, Authentication auth){
         return service.create(form, auth);
     }
     @PatchMapping("/update")
