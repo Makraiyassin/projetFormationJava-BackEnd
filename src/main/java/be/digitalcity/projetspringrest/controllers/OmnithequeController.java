@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/"})
+@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/","https://omnitheque.herokuapp.com/"})
 @RequestMapping("/api/omnitheque")
 public class OmnithequeController {
     private final OmnithequeService service;
