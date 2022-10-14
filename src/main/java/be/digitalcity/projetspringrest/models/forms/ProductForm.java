@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @ToString
 public class ProductForm {
-    @NotNull
     private Long id;
     @NotNull
     @Size(min = 2,max = 255)

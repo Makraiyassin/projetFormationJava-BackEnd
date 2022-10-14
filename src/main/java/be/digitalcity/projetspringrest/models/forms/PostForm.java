@@ -11,15 +11,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 public class PostForm {
-    @NotNull
     private Long id;
     @NotNull
     @Size(min = 2,max = 255)
     private String title;
-    @NotNull
     private String image;
     @NotNull
-    @Size(max = 20_000)
+    @Size(max = 200_000)
     private String content;
     @NotNull
     private LocalDate date;

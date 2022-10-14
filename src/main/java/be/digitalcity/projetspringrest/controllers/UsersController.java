@@ -30,6 +30,7 @@ public class UsersController {
 
     @PostMapping("/register")
     public UsersDto createUser(@Valid @RequestBody UsersForm form){
+        System.out.println(form);
         return service.create(form);
     }
 
