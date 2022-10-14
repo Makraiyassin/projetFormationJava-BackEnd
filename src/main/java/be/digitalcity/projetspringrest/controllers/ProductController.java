@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200/"})
+@CrossOrigin(origins = {"http://localhost:4200/","https://makraiyassin.github.io/"})
 @RequestMapping("/api/product")
 public class ProductController {
     private final ProductService service;
