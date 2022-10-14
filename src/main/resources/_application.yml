@@ -21,7 +21,7 @@ spring:
 
 application:
   jwt:
-    secret: "Y2nr@Svs1#Rume@v9^r$$hwTm563QpxLfdDTO$VdLLMnNRJmcQ"
+    secret: <SECRET>
     expiresAt: 30
     headerPrefix: "Bearer "
     headerKey: "Authorization"
