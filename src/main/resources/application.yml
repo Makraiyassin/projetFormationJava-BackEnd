@@ -12,6 +12,7 @@ spring:
     password:
     driver-class-name: com.mysql.jdbc.Driver
 
+
   jpa:
     show-sql: true
     hibernate:
@@ -23,3 +24,4 @@ application:
     expiresAt: 30
     headerPrefix: "Bearer "
     headerKey: "Authorization"
+
