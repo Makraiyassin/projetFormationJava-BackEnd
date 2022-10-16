@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -99,10 +101,28 @@ public class UsersService implements UserDetailsService {
     }
 
     public Omnitheque addOmnitheque(Authentication auth, Omnitheque omnitheque) {
-        Users user = repository.findByEmail(auth.getName()).get();
+        Users user = repository.findByEmail(auth.getName()).orElseThrow(
+                ()->new EntityNotFoundException("aucun utilisateur trouvé")
+        );
         user.setOmnitheque(omnithequeRepository.save(omnitheque));
         user.addRole(rolesRepository.findByName("PRO"));
         repository.save(user);
         return omnitheque;
+    }
+
+    public UsersDto getInfos(Long id) {
+        UsersDto usersDto = new UsersDto();
+
+        Users user = repository.findById(id).orElseThrow(
+                ()->new EntityNotFoundException("aucun utilisateur trouvé avec l'id {"+id+"}")
+        );
+
+        usersDto.setFirstName(user.getFirstName());
+        usersDto.setLastName(user.getLastName());
+        usersDto.setEmail(user.getEmail());
+        usersDto.setPhone(user.getPhone());
+        usersDto.setAddress(addressMapper.entityToDto(user.getAddress()));
+
+        return usersDto;
     }
 }
