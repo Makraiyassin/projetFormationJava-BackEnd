@@ -21,9 +21,9 @@ public class OmnithequeService {
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final AddressService addressService;
-    private final UsersDetailsServiceImpl usersService;
+    private final UsersService usersService;
 
-    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersDetailsServiceImpl usersService) {
+    public OmnithequeService(OmnithequeMapper mapper, OmnithequeRepository repository, AddressRepository addressRepository, AddressMapper addressMapper, AddressService addressService, UsersService usersService) {
         this.mapper = mapper;
         this.repository = repository;
         this.addressRepository = addressRepository;

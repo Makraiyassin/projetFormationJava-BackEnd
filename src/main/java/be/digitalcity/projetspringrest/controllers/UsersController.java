@@ -4,7 +4,7 @@ import be.digitalcity.projetspringrest.models.dtos.TokenDto;
 import be.digitalcity.projetspringrest.models.dtos.UsersDto;
 import be.digitalcity.projetspringrest.models.forms.LoginForm;
 import be.digitalcity.projetspringrest.models.forms.UsersForm;
-import be.digitalcity.projetspringrest.services.UsersDetailsServiceImpl;
+import be.digitalcity.projetspringrest.services.UsersService;
 import be.digitalcity.projetspringrest.utils.JwtProvider;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +18,11 @@ import javax.validation.Valid;
 @RequestMapping("/api/user")
 public class UsersController {
 
-    private final UsersDetailsServiceImpl service;
+    private final UsersService service;
     private final AuthenticationManager authManager;
     private final JwtProvider jwtProvider;
 
-    public UsersController(UsersDetailsServiceImpl service, AuthenticationManager authManager, JwtProvider jwtProvider) {
+    public UsersController(UsersService service, AuthenticationManager authManager, JwtProvider jwtProvider) {
         this.service = service;
         this.authManager = authManager;
         this.jwtProvider = jwtProvider;
