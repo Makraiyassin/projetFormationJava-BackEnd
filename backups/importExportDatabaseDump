@@ -1,0 +1,12 @@
+export
+    from heroku
+        heroku pg:backups:capture --app example-app
+        heroku pg:backups:download --app example-app
+    To Local
+        pg_restore --verbose --clean --no-acl --no-owner -h localhost -U myuser -d mydb latest.dump
+
+export
+    from Local
+        pg_dump -Fc --no-acl --no-owner -h localhost -U myuser mydb > mydb.dump
+    To heroku
+        heroku pg:backups:restore '<SIGNED URL>' DATABASE_URL --app example-app
