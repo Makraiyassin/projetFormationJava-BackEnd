@@ -52,4 +52,9 @@ public class UsersController {
         return service.update(auth, form);
 
     }
+    @GetMapping("/infos")
+    @Secured("ROLE_USER")
+    public UsersDto getInfos(@RequestParam Long id){
+        return service.getInfos(id);
+    }
 }
