@@ -3,14 +3,14 @@ server:
 
 spring:
   datasource:
-#    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
-#    username: postgres
-#    password: 1234
-#    driver-class-name: org.postgresql.Driver
-    url: jdbc:mysql://localhost:3306/db_projet_spring_rest
-    username: root
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:mysql://localhost:3306/db_projet_spring_rest
+#    username: root
+#    password:
+#    driver-class-name: com.mysql.jdbc.Driver
 
 
   jpa:

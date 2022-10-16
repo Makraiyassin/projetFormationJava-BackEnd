@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+
 @Service
 public class UsersService implements UserDetailsService {
 
