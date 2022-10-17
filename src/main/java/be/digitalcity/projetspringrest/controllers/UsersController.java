@@ -57,4 +57,13 @@ public class UsersController {
     public UsersDto getInfos(@RequestParam Long id){
         return service.getInfos(id);
     }
+
+    @GetMapping("/requestResetPassword")
+    public void requestResetPassword(@RequestParam String urlResetPassword, @RequestParam String email){
+        service.requestResetPassword(urlResetPassword,email);
+    }
+    @PostMapping("/resetPassword")
+    public void resetPassword( @RequestParam String token, @RequestBody UsersForm form){
+        service.resetPassword(token, form);
+    }
 }
