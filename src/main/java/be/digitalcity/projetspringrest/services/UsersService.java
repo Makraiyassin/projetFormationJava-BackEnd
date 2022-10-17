@@ -12,15 +12,21 @@ import be.digitalcity.projetspringrest.repositories.AddressRepository;
 import be.digitalcity.projetspringrest.repositories.OmnithequeRepository;
 import be.digitalcity.projetspringrest.repositories.RolesRepository;
 import be.digitalcity.projetspringrest.repositories.UsersRepository;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
+
 
 
 @Service
@@ -34,8 +40,9 @@ public class UsersService implements UserDetailsService {
     private final RolesRepository rolesRepository;
     private final PasswordEncoder encoder;
     private final AddressService addressService;
+    private final JavaMailSender mailSender;
 
-    public UsersService(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService) {
+    public UsersService(UsersMapper mapper, AddressMapper addressMapper, UsersRepository repository, AddressRepository addressRepository, OmnithequeRepository omnithequeRepository, RolesRepository rolesRepository, PasswordEncoder encoder, AddressService addressService, JavaMailSender mailSender) {
         this.mapper = mapper;
         this.addressMapper = addressMapper;
         this.repository = repository;
@@ -44,6 +51,7 @@ public class UsersService implements UserDetailsService {
         this.rolesRepository = rolesRepository;
         this.encoder = encoder;
         this.addressService = addressService;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -125,4 +133,41 @@ public class UsersService implements UserDetailsService {
 
         return usersDto;
     }
+
+    public void requestResetPassword(String urlResetPassword, String email) {
+        Users user = repository.findByEmail(email).orElseThrow(
+                ()-> new EntityNotFoundException("aucun utilisateur est lié à l'email {"+email+"}")
+        );
+
+        String token = UUID.randomUUID().toString();
+        user.setTokenResetPassword(token);
+        repository.save(user);
+
+        String content = "cher(e) "+user.getFirstName()+",<br>"
+                + "Cliquez sur le lien suivant:<br>"
+                + "<h3><a href=\""+urlResetPassword+token+"\">Réinitialiser mot de passe</a></h3>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        try {
+            helper.setFrom("m.hellodev@gmail.com", "l'Omnitheque");
+            helper.setTo(email);
+            helper.setSubject("Réinitialisation du mot de passe");
+            helper.setText(content, true);
+
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        mailSender.send(message);
+    }
+
+    public void resetPassword(String token, UsersForm form) {
+        Users user = repository.findByTokenResetPassword(token).orElseThrow(
+                ()-> new EntityNotFoundException("Votre token est invalide")
+        );
+        user.setPassword(encoder.encode(form.getPassword()));
+        repository.save(user);
+    }
+
 }

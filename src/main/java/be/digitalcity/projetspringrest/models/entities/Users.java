@@ -28,6 +28,7 @@ public class Users implements UserDetails {
     private String phone;
     private String email;
     private String password;
+    private String tokenResetPassword;
     private boolean enabled = true;
 
     @OneToOne
