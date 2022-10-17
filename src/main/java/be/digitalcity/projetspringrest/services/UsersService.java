@@ -28,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 
+
 @Service
 public class UsersService implements UserDetailsService {
 
@@ -168,4 +169,5 @@ public class UsersService implements UserDetailsService {
         user.setPassword(encoder.encode(form.getPassword()));
         repository.save(user);
     }
+
 }

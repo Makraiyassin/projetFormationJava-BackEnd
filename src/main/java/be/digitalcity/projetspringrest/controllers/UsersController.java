@@ -58,6 +58,7 @@ public class UsersController {
         return service.getInfos(id);
     }
 
+
     @GetMapping("/requestResetPassword")
     public void requestResetPassword(@RequestParam String urlResetPassword, @RequestParam String email){
         service.requestResetPassword(urlResetPassword,email);
@@ -66,4 +67,5 @@ public class UsersController {
     public void resetPassword( @RequestParam String token, @RequestBody UsersForm form){
         service.resetPassword(token, form);
     }
+
 }
