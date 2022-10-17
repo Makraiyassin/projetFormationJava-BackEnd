@@ -3,14 +3,14 @@ server:
 
 spring:
   datasource:
-#    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
-#    username: postgres
-#    password: 1234
-#    driver-class-name: org.postgresql.Driver
-    url: jdbc:mysql://localhost:3306/db_projet_spring_rest
-    username: root
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/db_projet_spring_rest
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:mysql://localhost:3306/db_projet_spring_rest
+#    username: root
+#    password:
+#    driver-class-name: com.mysql.jdbc.Driver
 
 
   jpa:
@@ -19,10 +19,10 @@ spring:
       ddl-auto: update
 
   mail:
-    host: smtp.gmail.com
-    port: 465 #${MAIL_PORT}
-    username: m.hellodev@gmail.com #${MAIL_USERNAME}
-    password:  upmztnvsidsbkkld #${MAIL_PASSWORD}
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password:  ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
